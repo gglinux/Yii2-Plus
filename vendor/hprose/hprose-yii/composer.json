@@ -1,0 +1,63 @@
+{
+    "name": "hprose/hprose-yii",
+    "type": "library",
+    "description": "Hprose Server for Yii 2",
+    "keywords": [
+        "hprose",
+        "yii",
+        "rpc",
+        "webservice",
+        "websocket",
+        "http",
+        "ajax",
+        "json",
+        "jsonrpc",
+        "xmlrpc",
+        "cross-language",
+        "cross-platform",
+        "cross-domain",
+        "html5",
+        "serialize",
+        "serialization",
+        "protocol",
+        "web",
+        "service",
+        "framework",
+        "library",
+        "game",
+        "communication",
+        "middleware",
+        "webapi",
+        "socket",
+        "tcp",
+        "async",
+        "unix",
+        "future"
+    ],
+    "homepage": "http://hprose.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ma Bingyao",
+            "email": "andot@hprose.com",
+            "homepage": "http://hprose.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "hprose/hprose": "^2.0",
+        "yiisoft/yii2": "^2.0"
+    },
+    "suggest": {
+        "ext-hprose": "Faster serialize and unserialize hprose extension."
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hprose\\Yii\\": "src/Hprose/Yii"
+        }
+    }
+}

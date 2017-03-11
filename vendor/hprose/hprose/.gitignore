@@ -1,0 +1,8 @@
+temp
+vendor
+composer.phar
+composer.lock
+/netbeans
+/nbproject
+/examples/nbproject
+.idea/
