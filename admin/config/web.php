@@ -2,7 +2,6 @@
 
 $params = require(__DIR__ . '/params.php');
 Yii::setAlias('@admin', dirname(dirname(__DIR__)) . '/admin');
-//Yii::setAlias('@vendor', dirname(dirname(__DIR__)) . '/vendor');
 
 $config = [
     'id' => 'admin',
@@ -13,7 +12,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '',
+            'cookieValidationKey' => 'true',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

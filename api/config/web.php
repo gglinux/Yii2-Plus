@@ -1,21 +1,24 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
 
 $config = [
-    'id' => 'basic',
+    'id' => 'admin',
     'basePath' => dirname(__DIR__),
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'controllerNamespace' => 'api\controllers',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '',
+            'cookieValidationKey' => 'true',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'admin\models\User',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
