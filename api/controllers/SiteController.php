@@ -60,7 +60,8 @@ class SiteController extends ApiController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        echo '这个是API接口返回';
+//        return $this->render('index');
     }
 
     /**
