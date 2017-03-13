@@ -1,6 +1,7 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+Yii::setAlias('@admin', dirname(dirname(__DIR__)) . '/admin');
 
 $config = [
     'id' => 'admin',
