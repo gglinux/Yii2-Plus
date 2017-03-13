@@ -2,11 +2,12 @@
 
 $params = require(__DIR__ . '/params.php');
 Yii::setAlias('@admin', dirname(dirname(__DIR__)) . '/admin');
-Yii::setAlias('@vendor', dirname(dirname(__DIR__)) . '/vendor');
+//Yii::setAlias('@vendor', dirname(dirname(__DIR__)) . '/vendor');
 
 $config = [
     'id' => 'admin',
     'basePath' => dirname(__DIR__),
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'controllerNamespace' => 'admin\controllers',
     'bootstrap' => ['log'],
     'components' => [
