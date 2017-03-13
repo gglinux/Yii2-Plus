@@ -3,8 +3,9 @@
 $params = require(__DIR__ . '/params.php');
 
 $config = [
-    'id' => 'basic',
+    'id' => 'admin',
     'basePath' => dirname(__DIR__),
+    'controllerNamespace' => 'admin\controllers',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
