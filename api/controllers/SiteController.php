@@ -9,6 +9,11 @@ use yii\filters\VerbFilter;
 use api\models\LoginForm;
 use api\models\ContactForm;
 
+use \Hprose\Http\Client;
+use Hprose\InvokeSettings;
+use Hprose\ResultMode;
+
+
 class SiteController extends ApiController
 {
     /**
@@ -60,7 +65,10 @@ class SiteController extends ApiController
      */
     public function actionIndex()
     {
-        echo '这个是API接口返回';
+        $client = Client::create('http://service.com/user', false);
+        $user = $client->hello('Word');
+        var_dump($user);exit();
+
 //        return $this->render('index');
     }
 

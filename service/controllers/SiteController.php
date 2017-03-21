@@ -1,19 +1,21 @@
 <?php
 
-namespace app\controllers;
+namespace service\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use service\models\LoginForm;
+use service\models\ContactForm;
+use Hprose\Http\Server;
+use service\models\User;
 
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
+
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [
@@ -60,7 +62,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $server = new Server();
+        $anObject = new User();
+
+        $server->addInstanceMethods($anObject);
+        return $server->start();
     }
 
     /**

@@ -40,15 +40,14 @@ $config = [
                 ],
             ],
         ],
-        'db' => require(__DIR__ . '/db.php'),
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'showScriptName' => true,
             'rules' => [
+                'user'=>'site/index'
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
