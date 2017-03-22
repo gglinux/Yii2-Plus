@@ -2,7 +2,7 @@
 
 namespace service\base;
 
-use yii\base\Controller;
+use yii\web\Controller;
 
 /**
  * 服务层模型
