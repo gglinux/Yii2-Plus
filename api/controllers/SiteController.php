@@ -9,6 +9,11 @@ use yii\filters\VerbFilter;
 use api\models\LoginForm;
 use api\models\ContactForm;
 
+use \Hprose\Http\Client;
+use Hprose\InvokeSettings;
+use Hprose\ResultMode;
+
+
 class SiteController extends ApiController
 {
     /**
@@ -53,14 +58,41 @@ class SiteController extends ApiController
         ];
     }
 
+
     /**
-     * Displays homepage.
+     * @desc
+     * APP可访问的接口 demo
      *
-     * @return string
+     * 已配置路由：请访问 http://api.dev.dabaozha.com/user
+     *
+     * 一般返回Json格式！！！
+     *
+     * 看这里！！！！！！！！！
+     *
+     *
+     * @author guojiawei
+     * @update ${date}
+     * @access public
+     * @param void
+     * @return mixed
      */
     public function actionIndex()
     {
-        echo '这个是API接口返回';
+        //通过RPC，调用service代码
+        $client = Client::create('http://service.com/user', false);
+        //调用hello函数
+        $user = $client->hello('Word');
+        //输出：string(11) "Hello Word!"
+        var_dump($user);
+
+        echo "<br>";
+        echo "<br>";
+
+        //调用getAll方法
+        $userAll = $client->getAll();
+        var_dump($userAll);
+        exit();
+
 //        return $this->render('index');
     }
 

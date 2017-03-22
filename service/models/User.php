@@ -1,104 +1,44 @@
 <?php
 
-namespace app\models;
+namespace service\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+//请继承，serviceModel
+use service\base\ServiceModel;
+
+/**
+ * Class User
+ * 用户服务层代码
+ * @package service\models
+ */
+class User extends ServiceModel
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
-     * @inheritdoc
+     * 测试RPC方法一
+     * 不使用DB
+     * 看这里1！！！！！！！！
+     * @param array $data
+     * @return int
      */
-    public static function findIdentity($id)
+    public function hello($name)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return "Hello $name!";
     }
 
     /**
-     * @inheritdoc
+     * @desc
+     * 测试 DB demo
+     * 看这里！！！！！！
+     * @author guojiawei
+     * @update ${date}
+     * @access public
+     * @param void
+     * @return mixed
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function getAll()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+        //具体数据库操作方法，见Yii指南
+        $posts = Yii::$app->db->createCommand('SELECT * FROM hjsk_user_base')->queryAll();
+        return $posts;
     }
 }
