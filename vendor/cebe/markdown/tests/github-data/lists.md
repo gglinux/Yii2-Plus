@@ -4,9 +4,3 @@ Text before list:
  * item 3.
 
 Text after list.
-
-- test
-- test
-   - test
-   - test
-- test

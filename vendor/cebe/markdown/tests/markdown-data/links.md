@@ -19,7 +19,3 @@ and another one in the same paragraph:
 Or leave it empty and use the [link text itself]()
 
 A [link [in a link](http://example.com)](http://example.com)
-
-About port info on wiki: [port]( http://en.wikipedia.org/wiki/Port_(computer_networking) )
-
-About port info on wiki: [port]( http://en.wikipedia.org/wiki/Port_(computer_networking)   "port wiki"  )

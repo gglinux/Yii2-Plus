@@ -10,8 +10,8 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '7a3a3ddf55aa5bdbff2cc90a2e666654' => __DIR__ . '/..' . '/hprose/hprose/src/Hprose.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '180092cfc969a12e06f2132a203a3184' => __DIR__ . '/..' . '/codeception/verify/src/Codeception/function.php',
     );
 
@@ -19,24 +19,20 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\redis\\' => 10,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
             'yii\\composer\\' => 13,
             'yii\\bootstrap\\' => 14,
+            'yii\\apidoc\\' => 11,
             'yii\\' => 4,
-        ),
-        'p' => 
-        array (
-            'phpDocumentor\\Reflection\\' => 25,
         ),
         'c' => 
         array (
+            'cebe\\markdown\\latex\\' => 20,
             'cebe\\markdown\\' => 14,
-        ),
-        'W' => 
-        array (
-            'Webmozart\\Assert\\' => 17,
+            'cebe\\jssearch\\' => 14,
         ),
         'S' => 
         array (
@@ -84,6 +80,10 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',
         ),
+        'yii\\redis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-redis',
+        ),
         'yii\\gii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-gii',
@@ -104,23 +104,25 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-bootstrap',
         ),
+        'yii\\apidoc\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-apidoc',
+        ),
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
-        'phpDocumentor\\Reflection\\' => 
+        'cebe\\markdown\\latex\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            0 => __DIR__ . '/..' . '/cebe/markdown-latex',
         ),
         'cebe\\markdown\\' => 
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
         ),
-        'Webmozart\\Assert\\' => 
+        'cebe\\jssearch\\' => 
         array (
-            0 => __DIR__ . '/..' . '/webmozart/assert/src',
+            0 => __DIR__ . '/..' . '/cebe/js-search/lib',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -197,15 +199,41 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
     );
 
     public static $prefixesPsr0 = array (
+        'p' => 
+        array (
+            'phpDocumentor' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+                1 => __DIR__ . '/..' . '/phpdocumentor/reflection/src',
+                2 => __DIR__ . '/..' . '/phpdocumentor/reflection/tests/unit',
+                3 => __DIR__ . '/..' . '/phpdocumentor/reflection/tests/mocks',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
+            'PHPParser' => 
+            array (
+                0 => __DIR__ . '/..' . '/nikic/php-parser/lib',
+            ),
+        ),
+        'M' => 
+        array (
+            'MikeVanRiel' => 
+            array (
+                0 => __DIR__ . '/..' . '/mikevanriel/text-to-latex/src',
+                1 => __DIR__ . '/..' . '/mikevanriel/text-to-latex/tests/unit',
+            ),
         ),
         'H' => 
         array (
+            'Highlight\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/scrivo/highlight.php',
+            ),
             'HTMLPurifier' => 
             array (
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',

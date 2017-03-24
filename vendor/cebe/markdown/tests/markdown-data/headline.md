@@ -37,5 +37,3 @@ hallo
 test
 ====
 test
-
-#1 has been fixed
