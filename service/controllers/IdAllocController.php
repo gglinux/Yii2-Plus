@@ -22,7 +22,7 @@ class IdAllocController extends ServiceController
 {
 
     public $enableCsrfValidation = false;
-
+    public $defaultAction = 'index';
  
 
     /**
@@ -34,6 +34,26 @@ class IdAllocController extends ServiceController
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+        ];
+    }
+
+    public function actionGetCurrentId($key)
+    {
+        $id = IdAlloc::getCurrentId($key);
+        return [
+            'code' => 0,
+            'message' => 0,
+            'data' => $id,
+        ];
+    }
+
+    public function actionAllocId($key)
+    {
+        $id = IdAlloc::allocId($key);
+        return [
+            'code' => 0,
+            'message' => 0,
+            'data' => $id,
         ];
     }
 

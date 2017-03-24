@@ -3,7 +3,6 @@
 namespace service\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 //请继承，serviceModel
 use service\base\ServiceModel;
@@ -23,29 +22,26 @@ class IdAlloc extends ServiceModel
         //return 'room_info';
     }
 
+    const ROOM_ID_ALLOC_KEY = 'roomid';
+    const USER_ID_ALLOC_KEY = 'userid';
+    const PRE_ROOM_ID_ALLOC_KEY = 'preroom';
+
     public static function getDb()
     {
         return \Yii::$app->redis;  // 使用名为 "db" 的应用组件
     }
 
-    public static function allocRoomId() {
+    public static function getCurrentId($idallocType) {
+        $redis = self::getDb();
+        $ret = $redis->get('idalloc_' . $idallocType);
+        return $ret;
+    }
+
+    public static function allocId($idallocType) {
         $redis = self::getDb();
         $step = 1;
-        $idallocType = 'roomid';
         $ret = $redis->INCRBY('idalloc_' . $idallocType, $step);
-        if(false === $ret) {
-            $strLog = __CLASS__ . "::". __FUNCTION__ . " call redis incrby error. ". serialize(compact('ret', 'input'));
-            Yii::error($strLog);
-            return [
-                'errno' => -1,
-                'errmsg' => $strLog
-            ];
-        }
-        return [
-            'errno' => 0,
-            'errmsg' => 'success',
-            'data' => $ret
-        ];
+        return $ret;
     }
    
 }

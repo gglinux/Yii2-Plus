@@ -29,7 +29,7 @@ class RoomController extends ServiceController
     public $enableCsrfValidation = false;
 
     public static $defaultIntValue = 1;
-
+    public $defaultAction = 'index';
     /**
      * @inheritdoc
      */
