@@ -21,8 +21,7 @@ trait TableTrait
 	 */
 	protected function identifyTable($line, $lines, $current)
 	{
-		return strpos($line, '|') !== false && isset($lines[$current + 1])
-			&& preg_match('~^\\s*\\|?(\\s*:?-[\\-\\s]*:?\\s*\\|\\s*:?-[\\-\\s]*:?\\s*)+\\|?\\s*$~', $lines[$current + 1]);
+		return strpos($line, '|') !== false && preg_match('~|.*|~', $line) && isset($lines[$current + 1]) && preg_match('~^[\s\|\:-]+$~', $lines[$current + 1]);
 	}
 
 	/**
@@ -39,10 +38,9 @@ trait TableTrait
 		];
 		$beginsWithPipe = $lines[$current][0] === '|';
 		for ($i = $current, $count = count($lines); $i < $count; $i++) {
-			$line = rtrim($lines[$i]);
+			$line = $lines[$i];
 
-			// extract alignment from second line
-			if ($i == $current+1) {
+			if ($i == $current+1) { // skip second line
 				$cols = explode('|', trim($line, ' |'));
 				foreach($cols as $col) {
 					$col = trim($col);
@@ -65,16 +63,14 @@ trait TableTrait
 
 				continue;
 			}
-			if ($line === '' || $beginsWithPipe && $line[0] !== '|') {
+			if (trim($line) === '' || $beginsWithPipe && $line[0] !== '|') {
 				break;
 			}
-			if ($line[0] === '|') {
-				$line = substr($line, 1);
+			if (substr($line, -2, 2) !== '\\|' || substr($line, -3, 3) === '\\\\|') {
+				$block['rows'][] = trim($line, '| ');
+			} else {
+				$block['rows'][] = ltrim($line, '| ');
 			}
-			if (substr($line, -1, 1) === '|' && (substr($line, -2, 2) !== '\\|' || substr($line, -3, 3) === '\\\\|')) {
-				$line = substr($line, 0, -1);
-			}
-			$block['rows'][] = $line;
 		}
 
 		return [$block, --$i];
@@ -92,7 +88,7 @@ trait TableTrait
 		foreach($block['rows'] as $row) {
 			$this->_tableCellTag = $first ? 'th' : 'td';
 			$align = empty($this->_tableCellAlign[$this->_tableCellCount]) ? '' : ' align="' . $this->_tableCellAlign[$this->_tableCellCount++] . '"';
-			$tds = "<$this->_tableCellTag$align>" . trim($this->renderAbsy($this->parseInline($row))) . "</$this->_tableCellTag>"; // TODO move this to the consume step
+			$tds = "<$this->_tableCellTag$align>" . $this->renderAbsy($this->parseInline($row)) . "</$this->_tableCellTag>"; // TODO move this to the consume step
 			$content .= "<tr>$tds</tr>\n";
 			if ($first) {
 				$content .= "</thead>\n<tbody>\n";

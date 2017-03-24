@@ -43,20 +43,6 @@ trait LinkTrait
 	protected $references = [];
 
 	/**
-	 * Remove backslash from escaped characters
-	 * @param $text
-	 * @return string
-	 */
-	protected function replaceEscape($text)
-	{
-		$strtr = [];
-		foreach($this->escapeCharacters as $char) {
-			$strtr["\\$char"] = $char;
-		}
-		return strtr($text, $strtr);
-	}
-
-	/**
 	 * Parses a link indicated by `[`.
 	 * @marker [
 	 */
@@ -130,14 +116,14 @@ trait LinkTrait
 				/(?(R) # in case of recursion match parentheses
 					 \(((?>[^\s()]+)|(?R))*\)
 				|      # else match a link with title
-					^\(\s*(((?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\s*\)
+					^\((((?>[^\s()]+)|(?R))*)(\s+"(.*?)")?\)
 				)/x
 REGEXP;
 			if (preg_match($pattern, $markdown, $refMatches)) {
 				// inline link
 				return [
 					$text,
-					isset($refMatches[2]) ? $this->replaceEscape($refMatches[2]) : '', // url
+					isset($refMatches[2]) ? $refMatches[2] : '', // url
 					empty($refMatches[5]) ? null: $refMatches[5], // title
 					$offset + strlen($refMatches[0]), // offset
 					null, // reference key
@@ -172,13 +158,13 @@ REGEXP;
 				if (preg_match('/^<([^\s]*?@[^\s]*?\.\w+?)>/', $text, $matches)) {
 					// email address
 					return [
-						['email', $this->replaceEscape($matches[1])],
+						['email', $matches[1]],
 						strlen($matches[0])
 					];
 				} elseif (preg_match('/^<([a-z]{3,}:\/\/[^\s]+?)>/', $text, $matches)) {
 					// URL
 					return [
-						['url', $this->replaceEscape($matches[1])],
+						['url', $matches[1]],
 						strlen($matches[0])
 					];
 				}
@@ -258,7 +244,7 @@ REGEXP;
 			$label = strtolower($matches[1]);
 
 			$this->references[$label] = [
-				'url' => $this->replaceEscape($matches[2]),
+				'url' => $matches[2],
 			];
 			if (isset($matches[3])) {
 				$this->references[$label]['title'] = $matches[3];
