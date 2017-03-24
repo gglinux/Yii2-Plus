@@ -79,7 +79,7 @@ class SiteController extends ApiController
     public function actionIndex()
     {
         //通过RPC，调用service代码
-        $client = Client::create('http://service.com/user', false);
+        $client = Client::create('http://service.dev.dabaozha.com/user', false);
         //调用hello函数
         $user = $client->hello('Word');
         //输出：string(11) "Hello Word!"
