@@ -1,6 +1,8 @@
 <?php
 // comment out the following two lines when deployed to production
+define('YII_REQUEST_START_TIME',microtime(true));
 defined('YII_DEBUG') or define('YII_DEBUG', $_SERVER['RUNTIME_ENVIROMENT']=='DEV');
+define('YII_ENV_DEV') or define('YII_ENV_DEV', $_SERVER['RUNTIME_ENVIROMENT']=='DEV');
 /**
  * YII_ENV defined in http server soft, DEV-开发环境/PREP-预发环境/PROD-线上环境
  */
