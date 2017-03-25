@@ -42,13 +42,16 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-//        'urlManager' => [
-//            'enablePrettyUrl' => true,
-//            'showScriptName' => true,
-//            'rules' => [
-//                'user'=>'site/index'
-//            ],
-//        ],
+        'redis' => require(__DIR__ . '/redis.php'),
+        //  'db' => require(__DIR__ . '/db.php'),
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => true,
+            'rules' => [
+                'user'=>'site/index',
+                //'room'=>'room/index'
+            ],
+        ],
     ],
     'params' => $params,
 ];

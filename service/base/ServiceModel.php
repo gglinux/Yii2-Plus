@@ -3,6 +3,7 @@
 namespace service\base;
 
 use yii\base\Model;
+use yii\db\ActiveRecord;
 
 /**
  * 服务层模型
@@ -10,7 +11,7 @@ use yii\base\Model;
  * Class ServiceModel
  * @package Service\base
  */
-class ServiceModel extends Model
+class ServiceModel extends ActiveRecord
 {
 
 }
