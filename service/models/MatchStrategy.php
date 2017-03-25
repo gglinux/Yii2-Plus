@@ -6,7 +6,6 @@ use Yii;
 
 //请继承，serviceModel
 use service\base\ServiceModel;
-use service\models\IdAlloc;
 use service\models\PreRoom;
 
 
@@ -32,7 +31,6 @@ class MatchStrategy extends ServiceModel
     const REDIS_KEY_MATCH_QUEUE_MAN = 'match_queue_man';
     const REDIS_KEY_MATCH_QUEUE_WOMAN = 'match_queue_woman';
     const REDIS_KEY_MATCH_QUEUE_PRE_ROOM = 'match_queue_pre_room';
-    const REDIS_KEY_USER_PRE_ROOM = 'user_pre_room';
 
     const SEX_MAN = 1;
     const SEX_WOMAN = 2;
@@ -87,8 +85,12 @@ class MatchStrategy extends ServiceModel
      */
     public static function rmUserFromQuere($arrUserInfos) {
         $redis = self::getDb();
-        $arrManList = [];
-        $arrWomanList = [];
+        $arrManList = [
+            self::REDIS_KEY_MATCH_QUEUE_MAN
+        ];
+        $arrWomanList = [
+            self::REDIS_KEY_MATCH_QUEUE_WOMAN
+        ];
         foreach($arrUserInfos as $item) {
             $intSex = $item['sex'];
             $intUid = $item['user_id'];
@@ -99,12 +101,12 @@ class MatchStrategy extends ServiceModel
             }
         }
         
-        if(count($arrManList) > 0) {
-            $ret = $redis->zrem(self::REDIS_KEY_MATCH_QUEUE_MAN,$arrManList);
+        if(count($arrManList) > 1) {
+            $ret = $redis->executeCommand('zrem', $arrManList);
         }
 
-        if (count($arrWomanList) > 0) {
-            $ret = $redis->zrem(self::REDIS_KEY_MATCH_QUEUE_WOMAN,$arrWomanList);
+        if (count($arrWomanList) > 1) {
+            $ret = $redis->executeCommand('zrem',$arrWomanList);
         }
        
       
@@ -119,6 +121,17 @@ class MatchStrategy extends ServiceModel
     public static function getMatchQueueLength($key) {
         $redis = self::getDb();
         $ret = $redis->zcount($key, '-inf' ,'+inf');
+        return  $ret;
+    }
+
+    /**
+     * 获取队列长度
+     * @param array 参数
+     * @return number 返回数量
+     */
+    public static function getPreRoomQueueLength($key) {
+        $redis = self::getDb();
+        $ret = $redis->llen($key);
         return  $ret;
     }
 
@@ -153,7 +166,13 @@ class MatchStrategy extends ServiceModel
     public static function addUsersToPreRoom ($arrUserInfos, $intPreRoomId){
 
         $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
+        var_dump($arrPreRoomInfo);
         //return 1;
+        if(empty($arrUserInfos)) {
+            $strLog = __CLASS__ . "::". __FUNCTION__ . " arrUserInfos is empty. ". serialize(compact('arrUserInfos', 'intPreRoomId'));
+            Yii::error($strLog);
+            return false;
+        }
         if(empty($arrPreRoomInfo)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::getPreRoomInfo error. ". serialize(compact('arrPreRoomInfo', 'intPreRoomId'));
             Yii::error($strLog);
@@ -161,66 +180,17 @@ class MatchStrategy extends ServiceModel
         }
 
         $arrPreRoomInfo['user_list'] = array_merge($arrPreRoomInfo['user_list'], $arrUserInfos);
-        $arrPreRoomInfo = PreRoom::setPreRoomInfo($arrPreRoomInfo);
-        if(empty($arrPreRoomInfo)) {
+        $ret = PreRoom::setPreRoomInfo($arrPreRoomInfo);
+        if(empty($ret)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::setPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
             Yii::error($strLog);
             return false;
         }
-
-        if(count($arrPreRoomInfo['user_list']) == 6) {
-            //success
-            $strLog = 'pre room reach 6 persion';
-            Yii::info($strLog);
-            //push message
-            self::rmPreRoomIdFromQueue($intPreRoomId);
-            self::rmUserFromQuere($arrUserInfos);
-            // create room
-            return true;
-        }  else {
-            self::rmUserFromQuere($arrUserInfos);
-            return true;
-        }
+        return $arrPreRoomInfo;
+        
        
     }
 
-     /**
-     * 记录人的信息
-     * @return arran arrPreRoomInfo
-     */
-    public static function recordUserPreRoom ($arrUserInfos, $intPreRoomId){
-
-        $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
-        //return 1;
-        if(empty($arrPreRoomInfo)) {
-            $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::getPreRoomInfo error. ". serialize(compact('arrPreRoomInfo', 'intPreRoomId'));
-            Yii::error($strLog);
-            return false;
-        }
-
-        $arrPreRoomInfo['user_list'] = array_merge($arrPreRoomInfo['user_list'], $arrUserInfos);
-        $arrPreRoomInfo = PreRoom::setPreRoomInfo($arrPreRoomInfo);
-        if(empty($arrPreRoomInfo)) {
-            $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::setPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
-            Yii::error($strLog);
-            return false;
-        }
-
-        if(count($arrPreRoomInfo['user_list']) == 6) {
-            //success
-            $strLog = 'pre room reach 6 persion';
-            Yii::info($strLog);
-            //push message
-            self::rmPreRoomIdFromQueue($intPreRoomId);
-            self::rmUserFromQuere($arrUserInfos);
-            // create room
-            return true;
-        }  else {
-            self::rmUserFromQuere($arrUserInfos);
-            return true;
-        }
-       
-    }
     
 
 
