@@ -2,6 +2,7 @@
 
 namespace service\modules\user\controllers;
 
+use hjsk\base\Exception;
 use service\base\ServiceController;
 use service\modules\user\models\User;
 
@@ -16,10 +17,18 @@ class RegisterController extends ServiceController
      */
     public function actionIndex()
     {
-        //1:数据校验
-        //2:数据获取
-        $uid = 123456;
-        $nick_name = 'gglinux';
+
+    }
+
+
+    public function actionRegisterthrid($uuid, $headicon, $way, $other = array())
+    {
+
+
+    }
+
+    public function actionRegistertrad($account, $password,$other)
+    {
 
     }
 }

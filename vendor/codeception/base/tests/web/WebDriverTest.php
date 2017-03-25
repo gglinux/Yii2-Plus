@@ -87,6 +87,19 @@ class WebDriverTest extends TestsForBrowsers
         $this->module->cancelPopup();
     }
 
+    /**
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     * @expectedExceptionMessage Failed asserting that 'Really?' contains "Different text".
+     */
+    public function testFailedSeeInPopup()
+    {
+        $this->notForPhantomJS();
+        $this->module->amOnPage('/form/popup');
+        $this->module->click('Alert');
+        $this->module->seeInPopup('Different text');
+        $this->module->cancelPopup();
+    }
+
     public function testScreenshot()
     {
         $this->module->amOnPage('/');
@@ -641,6 +654,7 @@ class WebDriverTest extends TestsForBrowsers
         $this->webDriver->manage()->deleteAllCookies();
         $this->module->dontSeeCookie('PHPSESSID');
         $this->module->dontSeeCookie('3rdParty');
+        $this->module->amOnPage('/');
         $this->module->loadSessionSnapshot('login');
         $this->module->seeCookie('PHPSESSID');
         $this->module->dontSeeCookie('3rdParty');
@@ -933,7 +947,6 @@ class WebDriverTest extends TestsForBrowsers
         $this->module->see('Login');
     }
 
-
     public function testPerformOnWithBuiltArray()
     {
         $asserts = \PHPUnit\Framework\Assert::getCount();
@@ -941,6 +954,19 @@ class WebDriverTest extends TestsForBrowsers
         $this->module->performOn('.rememberMe', \Codeception\Util\ActionSequence::build()
             ->see('Remember me next time')
             ->seeElement('#LoginForm_rememberMe')
+            ->dontSee('Login')
+        );
+        $this->assertEquals(3, \PHPUnit\Framework\Assert::getCount() - $asserts);
+        $this->module->see('Login');
+    }
+
+    public function testPerformOnWithArrayAndSimilarActions()
+    {
+        $asserts = \PHPUnit\Framework\Assert::getCount();
+        $this->module->amOnPage('/form/example1');
+        $this->module->performOn('.rememberMe', \Codeception\Util\ActionSequence::build()
+            ->see('Remember me')
+            ->see('next time')
             ->dontSee('Login')
         );
         $this->assertEquals(3, \PHPUnit\Framework\Assert::getCount() - $asserts);
@@ -964,5 +990,12 @@ class WebDriverTest extends TestsForBrowsers
         $this->module->performOn('.rememberMe', ['see' => 'Login']);
     }
 
-
+    public function testSwitchToIframe()
+    {
+        $this->module->amOnPage('iframe');
+        $this->module->switchToIFrame('content');
+        $this->module->see('Lots of valuable data here');
+        $this->module->switchToIFrame();
+        $this->module->see('Iframe test');
+    }
 }

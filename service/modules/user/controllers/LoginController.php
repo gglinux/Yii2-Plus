@@ -17,4 +17,24 @@ class LoginController extends ServiceController
     {
         return $this->render('index');
     }
+
+    /**
+     * @param $uuid
+     * @param $avator
+     * @param $nickname
+     */
+    public function actionLoginthird($uuid, $avator, $nickname)
+    {
+
+    }
+
+    /**
+     * @param $phone
+     * @param $password
+     */
+    public function actionLogintrad($phone,$password)
+    {
+
+    }
+
 }

@@ -2,6 +2,7 @@
 
 $params = require(__DIR__ . '/params.php');
 Yii::setAlias('@service', dirname(dirname(__DIR__)) . '/service');
+Yii::setAlias('@common', dirname(dirname(__DIR__)) . '/common');
 
 $config = [
     'id' => 'service',
@@ -41,13 +42,13 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => true,
-            'rules' => [
-                'user'=>'site/index'
-            ],
-        ],
+//        'urlManager' => [
+//            'enablePrettyUrl' => true,
+//            'showScriptName' => true,
+//            'rules' => [
+//                'user'=>'site/index'
+//            ],
+//        ],
     ],
     'params' => $params,
 ];
@@ -58,14 +59,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '11.11.11.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '11.11.11.1', '::1'],
     ];
 }
 

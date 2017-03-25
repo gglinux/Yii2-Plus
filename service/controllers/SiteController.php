@@ -2,6 +2,7 @@
 
 namespace service\controllers;
 
+use service\modules\user\services\UserService;
 use Yii;
 use yii\filters\AccessControl;
 use service\base\ServiceController;
@@ -79,7 +80,7 @@ class SiteController extends ServiceController
     public function actionIndex()
     {
         $server = new Server();
-        $anObject = new User();
+        $anObject = UserService::instance();
 
         $server->addInstanceMethods($anObject);
         return $server->start();

@@ -45,6 +45,7 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\BrowserKit\\' => 29,
+            'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
         ),
         'P' => 
         array (
@@ -61,6 +62,7 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'Faker\\' => 6,
         ),
         'D' => 
@@ -160,6 +162,10 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
         ),
+        'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -175,6 +181,10 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Faker\\' => 
         array (
@@ -207,6 +217,13 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
                 1 => __DIR__ . '/..' . '/phpdocumentor/reflection/src',
                 2 => __DIR__ . '/..' . '/phpdocumentor/reflection/tests/unit',
                 3 => __DIR__ . '/..' . '/phpdocumentor/reflection/tests/mocks',
+            ),
+        ),
+        'h' => 
+        array (
+            'hjsk' => 
+            array (
+                0 => __DIR__ . '/../..' . '/src',
             ),
         ),
         'P' => 

@@ -86,6 +86,11 @@ abstract class Step
         return $this->failed;
     }
 
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
+
     public function getArgumentsAsString($maxLength = 200)
     {
         $arguments = $this->arguments;
@@ -282,7 +287,7 @@ abstract class Step
         while (isset($stack[$i])) {
             $step = $stack[$i];
             $i--;
-            if (!isset($step['file']) or !isset($step['function'])) {
+            if (!isset($step['file']) or !isset($step['function']) or !isset($step['class'])) {
                 continue;
             }
 

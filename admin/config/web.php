@@ -2,6 +2,7 @@
 
 $params = require(__DIR__ . '/params.php');
 Yii::setAlias('@admin', dirname(dirname(__DIR__)) . '/admin');
+Yii::setAlias('@common', dirname(dirname(__DIR__)) . '/common');
 
 $config = [
     'id' => 'admin',

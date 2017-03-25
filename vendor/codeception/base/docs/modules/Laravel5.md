@@ -31,7 +31,7 @@ at <https://laravel.com/docs/master/upgrade>.
 * cleanup: `boolean`, default `true` - all database queries will be run in a transaction,
   which will be rolled back at the end of each test.
 * run_database_migrations: `boolean`, default `false` - run database migrations before each test.
-* database_migrations_path: `string`, default `` - path to the database migrations, relative to the root of the application.
+* database_migrations_path: `string`, default `null` - path to the database migrations, relative to the root of the application.
 * run_database_seeder: `boolean`, default `false` - run database seeder before each test.
 * database_seeder_class: `string`, default `` - database seeder class name.
 * environment_file: `string`, default `.env` - the environment file to load for the tests.
@@ -309,6 +309,18 @@ $I->checkOption('#agree');
 ```
 
  * `param` $option
+
+
+### clearApplicationHandlers
+ 
+Clear the registered application handlers.
+
+``` php
+<?php
+$I->clearApplicationHandlers();
+?>
+```
+
 
 
 ### click
@@ -910,6 +922,22 @@ $I->have('App\User', [], 'admin');
  * `param array` $attributes
  * `param string` $name
  * `[Part]` orm
+
+
+### haveApplicationHandler
+ 
+Register a handler than can be used to modify the Laravel application object after it is initialized.
+The Laravel application object will be passed as an argument to the handler.
+
+``` php
+<?php
+$I->haveApplicationHandler(function($app) {
+    $app->make('config')->set(['test_value' => '10']);
+});
+?>
+```
+
+ * `param` $handler
 
 
 ### haveBinding

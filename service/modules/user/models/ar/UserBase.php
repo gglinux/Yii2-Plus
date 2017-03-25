@@ -13,7 +13,7 @@ use Yii;
  * @property string $user_name
  * @property string $nick_name
  * @property integer $gender
- * @property integer $birthday
+ * @property string $birthday
  * @property string $signature
  * @property string $mobile
  * @property integer $mobile_bind_time
@@ -32,7 +32,7 @@ class UserBase extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%user_base}}';
+        return 'hjsk_user_base';
     }
 
     /**
@@ -56,23 +56,23 @@ class UserBase extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'uid' => 'Uid',
-            'user_role' => 'User Role',
-            'register_source' => 'Register Source',
-            'user_name' => 'User Name',
-            'nick_name' => 'Nick Name',
-            'gender' => 'Gender',
-            'birthday' => 'Birthday',
-            'signature' => 'Signature',
-            'mobile' => 'Mobile',
-            'mobile_bind_time' => 'Mobile Bind Time',
-            'email' => 'Email',
-            'email_bind_time' => 'Email Bind Time',
-            'face' => 'Face',
-            'face200' => 'Face200',
-            'srcface' => 'Srcface',
-            'create_time' => 'Create Time',
-            'update_time' => 'Update Time',
+            'uid' => '用户ID',
+            'user_role' => '2正常用户 3禁言用户 4虚拟用户 5运营',
+            'register_source' => '注册来源：1手机号 2邮箱 3用户名 4qq 5微信 6腾讯微博 7新浪微博',
+            'user_name' => '用户账号，必须唯一',
+            'nick_name' => '用户昵称',
+            'gender' => '用户性别 0-female 1-male',
+            'birthday' => '用户生日',
+            'signature' => '用户个人签名',
+            'mobile' => '手机号码(唯一)',
+            'mobile_bind_time' => '手机号码绑定时间',
+            'email' => '邮箱(唯一)',
+            'email_bind_time' => '邮箱绑定时间',
+            'face' => '头像',
+            'face200' => '头像 200x200x80',
+            'srcface' => '原图头像',
+            'create_time' => '创建时间',
+            'update_time' => '修改时间',
         ];
     }
 }

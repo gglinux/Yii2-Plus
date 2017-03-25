@@ -21,7 +21,6 @@ use Codeception\Module as CodeceptionModule;
 use Codeception\PHPUnit\Constraint\Page as PageConstraint;
 use Codeception\PHPUnit\Constraint\WebDriver as WebDriverConstraint;
 use Codeception\PHPUnit\Constraint\WebDriverNot as WebDriverConstraintNot;
-use Codeception\Step\Action;
 use Codeception\Test\Descriptor;
 use Codeception\Test\Interfaces\ScenarioDriven;
 use Codeception\TestInterface;
@@ -29,12 +28,12 @@ use Codeception\Util\Debug;
 use Codeception\Util\ActionSequence;
 use Codeception\Util\Locator;
 use Codeception\Util\Uri;
+use Facebook\WebDriver\Cookie;
 use Facebook\WebDriver\Exception\InvalidElementStateException;
 use Facebook\WebDriver\Exception\InvalidSelectorException;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\WebDriverCurlException;
-use Facebook\WebDriver\Exception\WebDriverException;
 use Facebook\WebDriver\Interactions\WebDriverActions;
 use Facebook\WebDriver\Remote\LocalFileDetector;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -1652,7 +1651,13 @@ class WebDriver extends CodeceptionModule implements
         if ($this->isPhantom()) {
             throw new ModuleException($this, 'PhantomJS does not support working with popups');
         }
-        $this->assertContains($text, $this->webDriver->switchTo()->alert()->getText());
+        $alert = $this->webDriver->switchTo()->alert();
+        try {
+            $this->assertContains($text, $alert->getText());
+        } catch (\PHPUnit_Framework_AssertionFailedError $e) {
+            $alert->dismiss();
+            throw $e;
+        }
     }
 
     /**
@@ -2178,6 +2183,7 @@ class WebDriver extends CodeceptionModule implements
     {
         if (is_null($name)) {
             $this->webDriver->switchTo()->defaultContent();
+            return;
         }
         $this->webDriver->switchTo()->frame($name);
     }
@@ -2707,7 +2713,7 @@ class WebDriver extends CodeceptionModule implements
         $this->sessionSnapshots[$name] = [];
 
         foreach ($this->webDriver->manage()->getCookies() as $cookie) {
-            if (in_array(trim($cookie['name']), [LocalServer::COVERAGE_COOKIE, LocalServer::COVERAGE_COOKIE])) {
+            if (in_array(trim($cookie['name']), [LocalServer::COVERAGE_COOKIE, LocalServer::COVERAGE_COOKIE_ERROR])) {
                 continue;
             }
 
@@ -2738,10 +2744,10 @@ class WebDriver extends CodeceptionModule implements
     /**
      * Check if the cookie domain matches the config URL.
      *
-     * @param array $cookie
+     * @param array|Cookie $cookie
      * @return bool
      */
-    private function cookieDomainMatchesConfigUrl(array $cookie)
+    private function cookieDomainMatchesConfigUrl($cookie)
     {
         if (!array_key_exists('domain', $cookie)) {
             return true;
@@ -2928,27 +2934,15 @@ class WebDriver extends CodeceptionModule implements
             $this->setBaseElement();
             return;
         }
-        if ($actions instanceof ActionSequence) {
-            $actions = $actions->toArray();
+        if (is_array($actions)) {
+            $actions = ActionSequence::build()->fromArray($actions);
         }
 
-        if (!is_array($actions)) {
-            throw new \InvalidArgumentException("2nd parameter, actions should be a valid callable or array");
+        if (!$actions instanceof ActionSequence) {
+            throw new \InvalidArgumentException("2nd parameter, actions should be callback, ActionSequence or array");
         }
-        foreach ($actions as $action => $value) {
-            if (!is_array($value)) {
-                $value = [$value];
-            }
-            $step = new Action($action, $value);
-            $this->debugSection("Action", (string)$step);
 
-            try {
-                call_user_func_array([$this, $action], $value);
-            } catch (WebDriverException $e) {
-                $class = get_class($e); // rethrow exception for a specific action
-                throw new $class($e->getMessage() . "\nat $step", $e->getResults());
-            }
-        }
+        $actions->run($this);
         $this->setBaseElement();
     }
 
