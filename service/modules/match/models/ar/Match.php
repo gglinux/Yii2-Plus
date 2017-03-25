@@ -1,19 +1,21 @@
 <?php
 
-namespace service\models;
+namespace service\modules\match\models\ar;
 
 use Yii;
 
 use yii\base\Model;
 
-use service\models\PreRoom;
+use service\modules\room\models\ar\PreRoom;
+use common\base\Exception;
+use common\base\BaseService;
 
 /**
- * Class MatchStrategy
+ * Class Match
  * 匹配策略
  * @package service\models
  */
-class MatchStrategy extends Model
+class Match extends \yii\db\ActiveRecord
 {
     /**
      * @return string 返回该AR类关联的数据表名
@@ -34,17 +36,7 @@ class MatchStrategy extends Model
     const SEX_MAN = 1;
     const SEX_WOMAN = 2;
 
-    /**
-     * 对房间进行人数匹配
-     * @param array 
-     * @return string 
-     */
-    public static function matchRoomLoop(){
-        $arrPreRoomQueueInfo = self::getPreRoomFromQueue();
-        
-    }
 
-    
 
     /**
      * 将用户送入匹配队列
@@ -147,11 +139,12 @@ class MatchStrategy extends Model
         if(empty($arrPreRoomInfo)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::setPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
             Yii::error($strLog);
-            return false;
+            throw new Exception('uuid或注册方式为空');
+            //return false;
         }
-        $ret = MatchStrategy::pushPreRoomIdToQueue($arrPreRoomInfo['pre_room_id']);
+        $ret = self::pushPreRoomIdToQueue($arrPreRoomInfo['pre_room_id']);
         if(empty($ret)) {
-            $strLog = __CLASS__ . "::". __FUNCTION__ . "  MatchStrategy::pushPreRoomIdToQueue error. ". serialize(compact('ret'));
+            $strLog = __CLASS__ . "::". __FUNCTION__ . "  MatchService::pushPreRoomIdToQueue error. ". serialize(compact('ret'));
             Yii::error($strLog);
             return false;
         }
@@ -165,7 +158,6 @@ class MatchStrategy extends Model
     public static function addUsersToPreRoom ($arrUserInfos, $intPreRoomId){
 
         $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
-        var_dump($arrPreRoomInfo);
         //return 1;
         if(empty($arrUserInfos)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " arrUserInfos is empty. ". serialize(compact('arrUserInfos', 'intPreRoomId'));

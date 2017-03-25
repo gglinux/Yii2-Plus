@@ -15,6 +15,9 @@ use service\base\ServiceModel;
  */
 class  RoomUser extends ServiceModel
 {
+    const EXIT_STATUS_BLOCK_OUT = 2;
+    CONST EXIT_STATUS_NOMARL_OUT = 1;
+    
     /**
      * @return string 返回该AR类关联的数据表名
      */
@@ -25,7 +28,7 @@ class  RoomUser extends ServiceModel
 
     public static function getDb()
     {
-        return \Yii::$app->db;  // 使用名为 "db" 的应用组件
+        return \Yii::$app->hjsk_db;  // 使用名为 "db" 的应用组件
     }
    
 }

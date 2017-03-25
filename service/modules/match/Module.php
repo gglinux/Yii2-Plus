@@ -1,6 +1,6 @@
 <?php
 
-namespace service\modules\matching;
+namespace service\modules\match;
 
 /**
  * matching module definition class
@@ -10,7 +10,7 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'service\modules\matching\controllers';
+    public $controllerNamespace = 'service\modules\match\controllers';
 
     /**
      * @inheritdoc

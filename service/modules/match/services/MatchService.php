@@ -1,107 +1,42 @@
 <?php
 
-namespace service\controllers;
+namespace service\modules\match\services;
 
 use Yii;
-use yii\filters\AccessControl;
-use service\base\ServiceController;
-use yii\filters\VerbFilter;
-use Hprose\Http\Server;
 
-use yii\web\Response;
-use service\models\MatchStrategy;
-use service\models\PreRoom;
-use service\models\IdAlloc;
-use service\models\Room;
+use yii\base\Model;
 
+use service\modules\room\models\ar\PreRoom;
+use service\modules\match\models\ar\Match;
 
-Yii::$app->response->format=Response::FORMAT_JSON;
+use common\base\Exception;
+use common\base\BaseService;
+
 /**
- * 服务层对外服务 控制器层（HTTP协议）
- * 请继承 ServiceController
- * Class SiteController
- * @package service\controllers
+ * Class Match
+ * 匹配策略
+ * @package service\models
  */
-class MatchController extends ServiceController
+class MatchService extends BaseService
 {
-
-    public $enableCsrfValidation = false;
-
-    public static $defaultIntValue = 1;
-
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        // $server = new Server();
-        // $anObject = new User();
-
-        // $server->addInstanceMethods($anObject);
-        // return $server->start();
-    }
-
-
-    /**
-     * @brif 队列增加人数
-     * @return string
-     */
-    public function actionAddUserToQueue($sex)
-    {
-       $ret = MatchStrategy::pushUserToQueue([
-           'user_id' => IdAlloc::allocId(IdAlloc::USER_ID_ALLOC_KEY),
-           'sex' => $sex
-       ]);
-       return $ret;
-
-    }
-
-    /**
-     * @brif 队列增加人数
-     * @return string
-     */
-    public function actionGetUserPreRoomInfo(array $user_ids)
-    {
-       $ret = PreRoom::getBatchUserPreRoomId($user_ids);
-       
-
-       $ret = PreRoom::getBatchPreRoomInfo($ret);
-        
-       return $ret;
-
-    }
-
     /**
      * @brif 创建房间
      * @return string
      */
 
-    public function actionMatchRoom()
+    public function matchRoom()
     {
         //clear redis key 
         //del pre_room_info user_pre_room match_queue_man match_queue_woman match_queue_pre_room
         //目前是单进程模式
         
         //获取队列中的预备房间ID
-        $intPreRoomId =  MatchStrategy::getPreRoomIdFromQueue();
+        $intPreRoomId =  Match::getPreRoomIdFromQueue();
         
         //获取等待队列长度
-        $intPreRoomCount = MatchStrategy::getPreRoomQueueLength(MatchStrategy::REDIS_KEY_MATCH_QUEUE_PRE_ROOM);
-        $intManWaitCount = MatchStrategy::getMatchQueueLength(MatchStrategy::REDIS_KEY_MATCH_QUEUE_MAN);
-        $intWomanWaitCount = MatchStrategy::getMatchQueueLength(MatchStrategy::REDIS_KEY_MATCH_QUEUE_WOMAN);
+        $intPreRoomCount = Match::getPreRoomQueueLength(Match::REDIS_KEY_MATCH_QUEUE_PRE_ROOM);
+        $intManWaitCount = Match::getMatchQueueLength(Match::REDIS_KEY_MATCH_QUEUE_MAN);
+        $intWomanWaitCount = Match::getMatchQueueLength(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
         
         var_dump("current pre room id $intPreRoomId");
 
@@ -123,7 +58,7 @@ class MatchController extends ServiceController
             //need create room
             var_dump("pre room is empty");
             var_dump("create pre room");
-            $arrPreRoomInfo = MatchStrategy::createNewPreRoom();
+            $arrPreRoomInfo = Match::createNewPreRoom();
             $intPreRoomId = $arrPreRoomInfo['pre_room_id'];
             var_dump($arrPreRoomInfo);
         } 
@@ -134,7 +69,7 @@ class MatchController extends ServiceController
         if(empty($arrPreRoomInfo)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::getPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
             Yii::error($strLog);
-            $ret = MatchStrategy::rmPreRoomIdFromQueue($intPreRoomId);
+            $ret = Match::rmPreRoomIdFromQueue($intPreRoomId);
             return false;
         }
         var_dump("current pre room info");
@@ -167,12 +102,12 @@ class MatchController extends ServiceController
                     var_dump("need man");
                     //need man
                     if ($intManWaitCount > 0) {
-                        $arrUserIds = MatchStrategy::getUserFromQueue(MatchStrategy::REDIS_KEY_MATCH_QUEUE_MAN);
+                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_MAN);
                         $intSex = 1;
                     } else {
                         // man is leak
                         var_dump("man is leak");
-                        MatchStrategy::createNewPreRoom();
+                        Match::createNewPreRoom();
                         Yii::warning("Man is not enough");
                     }
                     
@@ -181,11 +116,11 @@ class MatchController extends ServiceController
                     var_dump("need woman");
                     if ($intWomanWaitCount > 0) {
                         $intSex = 2;
-                        $arrUserIds = MatchStrategy::getUserFromQueue(MatchStrategy::REDIS_KEY_MATCH_QUEUE_WOMAN);
+                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
                     } else {
                         // woman is leak
                         var_dump("woman is leak");
-                        MatchStrategy::createNewPreRoom();
+                        Match::createNewPreRoom();
                         Yii::warning("Woman is not enough");
                     }
                 } else {
@@ -193,10 +128,10 @@ class MatchController extends ServiceController
                     var_dump("need everyone");
                     if ($intManWaitCount > $intWomanWaitCount) {
                         $intSex = 1;
-                        $arrUserIds = MatchStrategy::getUserFromQueue(MatchStrategy::REDIS_KEY_MATCH_QUEUE_MAN);
+                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_MAN);
                     } else {
                         $intSex = 2;
-                        $arrUserIds = MatchStrategy::getUserFromQueue(MatchStrategy::REDIS_KEY_MATCH_QUEUE_WOMAN);
+                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
                     }
                     
                 }
@@ -211,19 +146,19 @@ class MatchController extends ServiceController
                         'sex' => $intSex,
                     ];
                 }
-                var_dump('MatchStrategy::addUsersToPreRoom');
+                var_dump('Match::addUsersToPreRoom');
                 if (count($arrUserInfos) === 0) {
                     var_dump("没有匹配符合条件的用户，结束此次匹配");
                     break;
                 }
-                $arrPreRoomInfo = MatchStrategy::addUsersToPreRoom($arrUserInfos, $intPreRoomId);
+                $arrPreRoomInfo = Match::addUsersToPreRoom($arrUserInfos, $intPreRoomId);
                 if(false === $arrPreRoomInfo) {
-                    $strLog = __CLASS__ . "::". __FUNCTION__ . " MatchStrategy::addUsersToPreRoom error. ". serialize(compact('arrUsersInfo', 'intPreRoomId'));
+                    $strLog = __CLASS__ . "::". __FUNCTION__ . " Match::addUsersToPreRoom error. ". serialize(compact('arrUsersInfo', 'intPreRoomId'));
                     Yii::error($strLog);
                     return false;
                 }
                 var_dump($arrPreRoomInfo);
-                MatchStrategy::rmUserFromQuere($arrUserInfos);
+                Match::rmUserFromQuere($arrUserInfos);
             }
             
             if(count($arrPreRoomInfo['user_list']) == 6) {
@@ -242,7 +177,7 @@ class MatchController extends ServiceController
                     Yii::error($strLog);
                     return false;
                 }
-                MatchStrategy::rmPreRoomIdFromQueue($intPreRoomId);
+                Match::rmPreRoomIdFromQueue($intPreRoomId);
                 PreRoom::rmBatchUserPreRoomId($arrUserIds);
                 PreRoom::rmPreRoomInfo($intPreRoomId);
                 // create room
@@ -267,9 +202,5 @@ class MatchController extends ServiceController
         return $arrPreRoomInfo;
 
     }
-   
-
-
-
    
 }
