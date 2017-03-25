@@ -3,6 +3,7 @@
 namespace service\modules\user\models;
 use service\modules\user\models\ar\UserBase;
 use service\modules\user\models\ar\UserAuth;
+use service\modules\user\models\ar\UserExtra;
 use service\base\ServiceModel;
 
 class User extends ServiceModel
@@ -33,5 +34,11 @@ class User extends ServiceModel
     public function genUserUniqueId($uuid,$way)
     {
         return md5($uuid.$way.time());
+    }
+
+    public function genUserAccout($uid)
+    {
+        $account = 'lp_'.substr( md5($uid ),0,10);
+        return UserBase::updateAll(['user_name' => $account], "uid = $uid");
     }
 }

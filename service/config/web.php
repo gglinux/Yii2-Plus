@@ -48,10 +48,13 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => true,
             'rules' => [
-                'user'=>'site/index',
-                //'room'=>'room/index'
+                'user'=>'/user/login/index',
+                'room'=>'room/index'
             ],
         ],
+    ],
+    'modules' => [
+        'user' => 'service\modules\user\Module',
     ],
     'params' => $params,
 ];

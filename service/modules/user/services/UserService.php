@@ -9,14 +9,14 @@
 namespace service\modules\user\services;
 
 use common\base\Exception;
-use common\base\HjskService;
+use service\base\BaseService;
 use service\modules\user\models\User;
 use common\helpers\CommFunction;
 
-class UserService extends HjskService
+class UserService extends BaseService
 {
 
-    public function serRegisterthrid($uuid, $headicon, $way, $otherParams = array())
+    public function registerthrid($uuid, $headicon, $way, $otherParams = array())
     {
         $userModel = new User();
         if (empty($uuid) || empty($way)) {
@@ -30,12 +30,14 @@ class UserService extends HjskService
             throw new Exception('uid生成失败！');
         }
         $userinfo = $userModel->register($uid, $headicon, $otherParams);
+        //第三方登陆，生成账号
+        $userModel->genUserAccout($uid);
         if ( $userinfo ) {
             return $userinfo;
         }
     }
 
-    public function serRegistertrad($phone,$password,$otherParams = array())
+    public function registertrad($phone,$password,$otherParams = array())
     {
         $userModel = new User();
         if (empty($phone) || empty($password)) {
