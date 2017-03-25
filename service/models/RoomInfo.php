@@ -25,7 +25,8 @@ class RoomInfo extends ServiceModel
 
     public static function getDb()
     {
-        return \Yii::$app->db;  // 使用名为 "db" 的应用组件
+        return \Yii::$app->hjsk_db;  // 使用名为 "db" 的应用组件
     }
+
    
 }

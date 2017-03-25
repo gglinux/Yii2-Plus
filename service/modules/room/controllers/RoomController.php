@@ -1,27 +1,26 @@
 <?php
 
-namespace service\controllers;
+namespace service\modules\room\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
 use service\base\ServiceController;
 use yii\filters\VerbFilter;
-use service\models\LoginForm;
-use service\models\ContactForm;
 use Hprose\Http\Server;
-use service\models\RoomInfo;
-use service\models\RoomUser;
-use service\models\Room;
+
+use service\modules\room\models\ar\RoomInfo;
+use service\modules\room\models\ar\RoomUser;
+use service\modules\room\services\RoomService;
 
 use yii\web\Response;
-use service\models\IdAlloc;
+use service\modules\room\models\ar\IdAlloc;
 
 
 Yii::$app->response->format=Response::FORMAT_JSON;
 /**
  * 服务层对外服务 控制器层（HTTP协议）
  * 请继承 ServiceController
- * Class SiteController
+ * Class RoomController
  * @package service\controllers
  */
 class RoomController extends ServiceController
@@ -67,13 +66,7 @@ class RoomController extends ServiceController
         // return $server->start();
     }
 
-    public function actionUpdateRoomUser(){
-        $arrParam = [
-            'room_id' => 31,
-            'user_id' => 215,
-        ];
-        Room::updateRoomUserInfo($arrParam);
-    }
+
 
     public function actionRoomUserExit(){
         $arrParam = [
@@ -81,7 +74,7 @@ class RoomController extends ServiceController
             'user_id' => 215,
             'exit_status' => 1,
         ];
-        Room::updateRoomUserInfo($arrParam);
+        return RoomService::updateRoomUserInfo($arrParam);
     }
 
     /**

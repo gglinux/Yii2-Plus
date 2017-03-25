@@ -15,7 +15,7 @@ use Yii;
 defined('YII_REQUEST_START_TIME') or define('YII_REQUEST_START_TIME','');
 
 
-class HjskService
+class BaseService
 {
     private static $_INSTANCE = array();
 
