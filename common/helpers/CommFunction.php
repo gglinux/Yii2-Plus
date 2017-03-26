@@ -290,4 +290,43 @@ class CommFunction
         return $os_platform;
     }
 
+    /**
+     * 匹配是否为 手机号码
+     * @param $mobile
+     * @return bool
+     */
+    public static function isPhoneNum($mobile)
+    {
+        if( preg_match("/^1[34578]\d{9}$/", $mobile) ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 匹配是否为邮箱地址
+     * @param $email
+     * @return bool
+     */
+    public static function isEmailAddress($email)
+    {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 匹配是否是欢聚时刻账号
+     * @param $account
+     * @return bool
+     */
+    public static function isHjskAccout($account)
+    {
+        if (preg_match("^[_a-zA-Z][_a-zA-Z0-9]*$", $account)) {
+            return true;
+        }
+        return false;
+    }
+
 }

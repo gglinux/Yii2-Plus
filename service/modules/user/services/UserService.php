@@ -8,7 +8,7 @@
 
 namespace service\modules\user\services;
 
-use common\base\Exception;
+use service\base\ServiceException;
 use service\base\BaseService;
 use service\modules\user\models\User;
 use common\helpers\CommFunction;
@@ -20,14 +20,14 @@ class UserService extends BaseService
     {
         $userModel = new User();
         if (empty($uuid) || empty($way)) {
-            throw new Exception('uuid或注册方式为空');
+            throw new ServiceException('uuid或注册方式为空');
         }
         if ($userModel->isExistUuid($uuid, $way)) {
-            throw new Exception('已经存在该注册方式下的唯一标识符');
+            throw new ServiceException('已经存在该注册方式下的唯一标识符');
         }
         $uid = $userModel->genUserUniqueId($uuid,$way);
         if ($uid) {
-            throw new Exception('uid生成失败！');
+            throw new ServiceException('uid生成失败！');
         }
         $userinfo = $userModel->register($uid, $headicon, $otherParams);
         //第三方登陆，生成账号
@@ -41,7 +41,7 @@ class UserService extends BaseService
     {
         $userModel = new User();
         if (empty($phone) || empty($password)) {
-            throw new Exception('手机号码或者账号或为空');
+            throw new ServiceException('手机号码或者账号或为空');
         }
         $tradRegisterWay = 0;
 
@@ -49,6 +49,11 @@ class UserService extends BaseService
             $tradRegisterWay = 1;
         } elseif(CommFunction::isEmailAddress($phone)) {
             $tradRegisterWay = 2;
+        } elseif (CommFunction::isHjskAccout($phone)) {
+            $tradRegisterWay = 3;
+        }
+        if ($tradRegisterWay == 0) {
+            throw  new ServiceException("非账号，邮箱，手机号码方式注册！");
         }
     }
 }
