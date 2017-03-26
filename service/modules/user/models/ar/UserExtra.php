@@ -34,6 +34,11 @@ class UserExtra extends \yii\db\ActiveRecord
         return 'hjsk_user_extra';
     }
 
+    public static function getDb()
+    {
+        return Yii::$app->get('db_user');
+    }
+
     /**
      * @inheritdoc
      */
@@ -60,7 +65,7 @@ class UserExtra extends \yii\db\ActiveRecord
         return [
             'uid' => '用户 ID',
             'vendor' => '手机厂商：apple|htc|samsung，很少用',
-            'client_name' => '客户端名称，如hjskang',
+            'client_name' => '客户端名称，如hjsk',
             'client_version' => '客户端版本号，如7.0.1',
             'os_name' => '设备号:android|ios',
             'os_version' => '系统版本号:2.2|2.3|4.0|5.1',

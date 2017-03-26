@@ -35,6 +35,11 @@ class UserBase extends \yii\db\ActiveRecord
         return 'hjsk_user_base';
     }
 
+    public static function getDb()
+    {
+        return Yii::$app->get('db_user');
+    }
+
     /**
      * @inheritdoc
      */
@@ -74,5 +79,14 @@ class UserBase extends \yii\db\ActiveRecord
             'create_time' => '创建时间',
             'update_time' => '修改时间',
         ];
+    }
+
+    /**
+     * 获取用户数据
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserInfo()
+    {
+        return $this->hasOne(UserExtra::className(),['uid' => 'uid']);
     }
 }

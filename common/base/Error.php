@@ -7,83 +7,33 @@ namespace common\base;
 class Error
 {
 
-    static $error_array = [
+    /**********************公共错误码100XXX**************************/
+    const COMMON_UNKOWN                 = 100000; //未知错误
+    const COMMON_DB                     = 100001; //数据库错误
+    const COMMON_SIGN                   = 100002; //签名错误
+    const COMMON_ILLEGAL_CLIENT         = 100003; //非法客户端类型
+    const COMMON_METHOD                 = 100004; //非法的http请求方法
+    const COMMON_INVALID_PHONE          = 100005; //手机号格式不正确
+    const COMMON_MIS_CONF               = 100006; //缺少配置
+    const COMMON_THRIFT                 = 100007; //thrift 服务出错
+    const COMMON_INVALID_EMAIL          = 100008; //邮箱格式不正确
+    const COMMON_CACHE_W                = 100009; //cache写失败
+    const COMMON_VERIFY_CODE_ERR        = 100010; //验证码错误
+    const COMMON_UNKOWN_TYPE            = 100011; //未知类型
+    const COMMON_IDCARD_ERR             = 100012; //身份证错误
+    const COMMON_MISS_PARAM             = 100013; //缺少参数
+    const COMMON_NONCE_ERROR            = 100014; //检测到可能的重放攻击
+    const COMMON_INVALID_PARAM          = 100015; //参数不合法
+    const COMMON_LIMIT_BEYOND           = 100016; //超过业务限制
+    const COMMON_NO_SUCH_OBJECT         = 100017; //对象不存在
 
-        //////////// 公共错误100XX /////////
+    //////////////////////////账号中心异常错误码////////////////////////////////
 
-        10000 => [
-            'zh'=>'参数类型错误',
-            'en'=>'params error'
-        ],
-        10001 => [
-            'zh'=>'部分参数为空',
-            'en'=>'params empty'
-        ],
-        10002 => [
-            'zh'=>'数据库错误',
-            'en'=>'db error'
-        ],
-        10003 => [
-            'zh'=>'签名错误',
-            'en'=>'sign error'
-        ],
-        10004 => [
-            'zh'=>'非法客户端类型',
-            'en'=>'client error'
-        ],
-        10005 => [
-            'zh'=>'cache写失败',
-            'en'=>'cache write error'
-        ],
-        10006 => [
-            'zh'=>'cache读错误',
-            'en'=>'cache read error'
-        ],
-        10007 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
-        10008 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
-        10009 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
-        10010 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
+    const ACCOUNT_EMPTY                 = 20000;//手机号码或者账号为空
+    const LOGIN_TYPE_ERROR              = 20001;//非账号，邮箱，手机号码方式注册
+    const ACCOUNT_REPEAT                = 20002;//已经存在该注册方式下的唯一账号
+    const ACCOUNT_PASSWORD_ERROR        = 20003;//账号或者密码错误
 
-    ///////////////// 业务类型错误 200XX ////////////////////
-        20000 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
-        20001 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
-        20002 => [
-            'zh'=>'参数为空',
-            'en'=>'params empty'
-        ],
 
-    ];
 
-    /**
-     * 获取欢聚时刻常用错误信息
-     * @param int $code
-     * @return mixed
-     * @throws Exception
-     */
-    public function getErrorMsg($code = 10000)
-    {
-        $msg = self::$error_array[$code];
-        if ( empty($msg) ) {
-            throw new Exception('未定义的错误类型！');
-        }
-        return $msg;
-    }
 } 

@@ -2,6 +2,8 @@
 
 namespace service\models;
 
+use common\base\Exception;
+use service\base\ServiceException;
 use Yii;
 //请继承，serviceModel
 use service\base\ServiceModel;
@@ -38,7 +40,12 @@ class User extends ServiceModel
     public function getAll()
     {
         //具体数据库操作方法，见Yii指南
-        $posts = Yii::$app->db->createCommand('SELECT * FROM hjsk_user_base')->queryAll();
+        $posts = Yii::$app->db_user->createCommand('SELECT * FROM hjsk_user_base')->queryAll();
         return $posts;
+    }
+
+    public function TestException()
+    {
+        throw new ServiceException('测试异常调用',1000);
     }
 }
