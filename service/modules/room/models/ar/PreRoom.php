@@ -41,12 +41,8 @@ class PreRoom extends \yii\db\ActiveRecord
             $arrPreRoomInfo['pre_room_id'] = $intPreRoomId;
         }
         Yii::warning('intPreRoomId: ' . $intPreRoomId);
-        $ret = $redis->HSET(self::REDIS_KEY_PRE_ROOM , $intPreRoomId, serialize($arrPreRoomInfo));
-        if(false === $ret) {
-            return $ret;
-        } else {
-            return $arrPreRoomInfo;
-        }
+        $redis->HSET(self::REDIS_KEY_PRE_ROOM , $intPreRoomId, serialize($arrPreRoomInfo));
+        return $arrPreRoomInfo;
         
     }
 
@@ -69,9 +65,7 @@ class PreRoom extends \yii\db\ActiveRecord
         $redis = self::getDb();
         $arrRedisParam = [];
         $arrRedisParam[] = self::REDIS_KEY_PRE_ROOM;
-        foreach($arrPreRoomIds as $id) {
-            $arrRedisParam[] = $id;
-        }
+        $arrRedisParam = array_merge($arrRedisParam, $arrPreRoomIds);
         //$ret = $redis->HMGET(self::REDIS_KEY_USER_PRE_ROOM , $arrRedisParam);
         $ret = $redis->executeCommand('hmget', $arrRedisParam);
         $arrRet = [];

@@ -33,7 +33,7 @@ class RoomUser extends \yii\db\ActiveRecord
      */
     public static function getDB()
     {
-        return \Yii::$app->hjsk_db;  // 使用名为 "db" 的应用组件
+        return \Yii::$app->db_lianpa;  // 使用名为 "db" 的应用组件
     }
 
     /**

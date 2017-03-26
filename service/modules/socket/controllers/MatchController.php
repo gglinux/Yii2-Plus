@@ -54,23 +54,6 @@ class MatchController extends ServiceController
         // return $server->start();
     }
 
-    public function actionSendMessage(){
-
-        $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
-        $arrMsgList = [
-            [
-                "userId" => 123,
-                "cmd"  => "Msg",
-                "data" => [
-                    'hh'=> 'aaaa',
-                ]
-            ]
-        ];
-        $ret = $client->commitMsgToClients($arrMsgList);
-        return $ret;
-
-    }
-
 
     /**
      * @brif 队列增加人数

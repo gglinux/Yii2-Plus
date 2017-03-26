@@ -3,17 +3,11 @@
 namespace service\modules\room\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
 use service\base\ServiceController;
-use yii\filters\VerbFilter;
 use Hprose\Http\Server;
 
-use service\modules\room\models\ar\RoomInfo;
-use service\modules\room\models\ar\RoomUser;
 use service\modules\room\services\RoomService;
-
 use yii\web\Response;
-use service\modules\room\models\ar\IdAlloc;
 
 
 Yii::$app->response->format=Response::FORMAT_JSON;
@@ -77,22 +71,6 @@ class RoomController extends ServiceController
         return RoomService::updateRoomUserInfo($arrParam);
     }
 
-    /**
-     * @brif 创建房间
-     * @return string
-     */
-    public function actionGetRoomById($id)
-    {
-        var_dump($id);
-        $arrRoomInfo = RoomInfo::find()->orderBy('id')->all();
-        Yii::$app->response->format=Response::FORMAT_JSON;
-        return [
-            'errno'=> 0 ,
-            'errmsg'=>'success',
-            'data' => $arrRoomInfo
-        ];
-    }
-
 
     /**
      * @brif 查看房间
@@ -107,6 +85,26 @@ class RoomController extends ServiceController
             'errmsg'=>'success',
             'data' => $arrRoomInfo
         ];
+    }
+
+    /**
+     * @brif 测试函数
+     * @return string
+     */
+    public function actionCall()
+    {
+        $updateRoomInfo = RoomService::updateRoomInfo([
+            'room_id' => 30,
+            'game_status' => 1,
+        ]);
+        $roomInfo = RoomService::getBatchRoomInfo([30]);
+        $userInfos = RoomService::getBatchRoomUsers([30]);
+        $userInRoomInfo = RoomService::getUserInRoom([
+            'user_id' => 205,
+            'room_id' => 30
+        ]);
+        $arrRet = compact('roomInfo', 'userInfos', 'userInRoomInfo', 'updateRoomInfo');
+        return $arrRet;
     }
 
     
