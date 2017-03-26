@@ -33,11 +33,15 @@ class UserAuth extends \yii\db\ActiveRecord
         return [
             [['uid', 'identity_type', 'create_time', 'update_time'], 'integer'],
             [['identifier'], 'string', 'max' => 50],
-            [['certificate'], 'string', 'max' => 20],
+            [['certificate'], 'string', 'max' => 50],
             [['uid', 'identity_type'], 'unique', 'targetAttribute' => ['uid', 'identity_type'], 'message' => 'The combination of 用户id and 1手机号 2邮箱 3用户名 4qq 5微信 6腾讯微博 7新浪微博 has already been taken.'],
         ];
     }
 
+    public static function getDb()
+    {
+        return Yii::$app->get('db_user');
+    }
     /**
      * @inheritdoc
      */

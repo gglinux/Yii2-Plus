@@ -79,11 +79,11 @@ class SiteController extends ServiceController
      */
     public function actionIndex()
     {
-//        $server = new Server();
-//        $anObject = UserService::instance();
-//
-//        $server->addInstanceMethods($anObject);
-//        return $server->start();
+        $server = new Server();
+        $anObject = UserService::instance();
+
+        $server->addInstanceMethods($anObject);
+        return $server->start();
         echo 'hello';
     }
 

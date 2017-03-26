@@ -2,7 +2,10 @@
 
 namespace service\modules\user\controllers;
 
+
+use Hprose\Yii\Server;
 use service\base\ServiceController;
+use service\modules\user\services\UserService;
 
 /**
  * Default controller for the `user` module
@@ -15,27 +18,11 @@ class LoginController extends ServiceController
      */
     public function actionIndex()
     {
-//        return $this->render('index');
-        echo 'hello';exit();
-    }
-
-    /**
-     * @param $uuid
-     * @param $avator
-     * @param $nickname
-     */
-    public function actionLoginthird($uuid, $avator, $nickname)
-    {
-
-    }
-
-    /**
-     * @param $phone
-     * @param $password
-     */
-    public function actionLogintrad($phone,$password)
-    {
-
+        $service = new UserService();
+        $server = new Server();
+        $server->add('loginTrad', $service);
+        $server->add('loginThrid', $service);
+        return $server->start();
     }
 
 }

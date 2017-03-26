@@ -8,7 +8,7 @@
 ///////////RPC对外路由配置/////////////
 
 $rules = [
-//    'user'=>'/user/login/index',
+    'user/register'=>'/user/register/index',
 ];
 
 return $rules;
