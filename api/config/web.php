@@ -1,19 +1,27 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+
+$ENV_CONFIG_PATH = __DIR__.'/'.YII_ENV; //当前环境配置所在目录
+
 Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
 Yii::setAlias('@common', dirname(dirname(__DIR__)) . '/common');
 
 $config = [
-    'id' => 'admin',
+    'id' => 'api',
     'basePath' => dirname(__DIR__),
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'controllerNamespace' => 'api\controllers',
+    'timeZone'=>'Asia/Chongqing',
     'bootstrap' => ['log'],
-    'components' => [
+    'components' => array_merge([
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'true',
+            'cookieValidationKey' => '1LafUEESUoCk__FXRF4iZ9LE4Wk4DcWu',
+            'enableCsrfValidation' => false,
+        ],
+        'response' => [
+            'class' => 'api\components\Response',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -34,40 +42,44 @@ $config = [
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
+            'targets' => require($ENV_CONFIG_PATH.'/log.php'),
         ],
-
+        // 'db' => require(__DIR__ . '/hjsk_db.php'),
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => true,
-            'rules' => [
-                'user'=>'site/index'
-            ],
+            'rules' => require('url.php'),
         ],
+    ], require($ENV_CONFIG_PATH.'/components.php')),
+
+
+    'modules' => [
+        'user' => [
+            'class' => 'service\modules\user\Module',
+        ],
+        'room' => [
+            'class' => 'service\modules\room\Module',
+        ],
+        'match' => [
+            'class' => 'service\modules\match\Module',
+        ]
     ],
     'params' => $params,
 ];
-
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '11.11.11.1', '192.168.11.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1','::1','11.11.11.1', '192.168.0.*', '192.168.11.1' ],
     ];
 }
-
 return $config;

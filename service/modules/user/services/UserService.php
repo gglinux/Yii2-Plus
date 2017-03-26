@@ -34,7 +34,7 @@ class UserService extends BaseService
             throw new ServiceException('uuid或注册方式为空');
         }
         if ($userModel->getAuthInfo($uuid, $way)) {
-            throw new ServiceException('已经存在该注册方式下的唯一标识符');
+            $this->error('已经存在该注册方式下的唯一标识符');
         }
         $uid = $userModel->genUserUniqueId();
         if ($uid) {
@@ -80,7 +80,7 @@ class UserService extends BaseService
             throw  new ServiceException("非账号，邮箱，手机号码方式注册！",20001);
         }
         if ($userModel->getAuthInfo($phone, $tradRegisterWay)) {
-            throw new ServiceException('已经存在该注册方式下的唯一账号',20002);
+            $this->error('已经存在该注册方式下的唯一账号',20002);
         }
         $uid = $userModel->genUserUniqueId();
         //非账号登陆，生成唯一账号
@@ -134,13 +134,13 @@ class UserService extends BaseService
             $tradRegisterWay = 3;
         }
         if ($tradRegisterWay == 0) {
-            throw  new ServiceException("非账号，邮箱，手机号码方式注册！",20001);
+            throw new ServiceException("非账号，邮箱，手机号码方式注册！",20001);
         }
         $userAuthInfo = $userModel->getAuthInfo($phone, $tradRegisterWay,$password);
         if ($userAuthInfo['uid']) {
             return $userModel->getUserInfoByUid($userAuthInfo['uid']);
         } else {
-            throw  new ServiceException("账号或者密码错误！",20003);
+            $this->error("账号或者密码错误！",20003);
         }
     }
 }

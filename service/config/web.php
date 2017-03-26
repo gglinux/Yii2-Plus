@@ -10,6 +10,7 @@ Yii::setAlias('@common', dirname(dirname(__DIR__)) . '/common');
 $config = [
     'id' => 'service',
     'basePath' => dirname(__DIR__),
+    'timeZone'=>'Asia/Chongqing',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'controllerNamespace' => 'service\controllers',
     'bootstrap' => ['log'],
@@ -17,6 +18,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'true',
+            'enableCsrfValidation' => false,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

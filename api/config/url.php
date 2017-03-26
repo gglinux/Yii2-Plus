@@ -5,13 +5,14 @@
  * Date: 2017/3/26
  * Time: 上午9:57
  */
-///////////RPC对外路由配置/////////////
+///////////API对外路由配置/////////////
 
 $rules = [
     'test'         =>'site/index',
     /////////////////账号中心//////////////////
-    'user/register'=>'/user/user/register',
-    'user/login'=>'/user/user/login'
+
+    'user/register'     =>  '/user/register/index',
+    'user/login'        =>  '/user/login/index',
 ];
 
 return $rules;

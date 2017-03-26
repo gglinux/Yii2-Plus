@@ -13,5 +13,6 @@ use service\base\ServiceController;
 
 class RelationController extends ServiceController
 {
+    public $enableCsrfValidation = false;
 
 }

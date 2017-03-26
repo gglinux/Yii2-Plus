@@ -2,6 +2,8 @@
 
 namespace api\controllers;
 
+use service\base\ServiceException;
+use \Exception;
 use Yii;
 use yii\filters\AccessControl;
 use api\base\ApiController;
@@ -79,7 +81,7 @@ class SiteController extends ApiController
     public function actionIndex()
     {
         //通过RPC，调用service代码
-        $client = Client::create('http://service.dev.dabaozha.com/user', false);
+        $client = Client::create('http://service.dev.dabaozha.com/test', false);
         //调用hello函数
         $user = $client->hello('Word');
         //输出：string(11) "Hello Word!"
@@ -91,9 +93,9 @@ class SiteController extends ApiController
         //调用getAll方法
         $userAll = $client->getAll();
         var_dump($userAll);
+        //$client->TestException();
         exit();
-
-//        return $this->render('index');
+        //return $this->render('index');
     }
 
     /**
