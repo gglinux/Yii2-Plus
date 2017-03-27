@@ -53,19 +53,7 @@ $config = [
         ],
     ], require($ENV_CONFIG_PATH.'/components.php')),
 
-
-    'modules' => [
-        'user' => [
-            'class' => 'api\modules\user\Module',
-        ],
-        'room' => [
-            'class' => 'api\modules\room\Module',
-        ],
-        'match' => [
-            'class' => 'api\modules\match\Module',
-        ]
-    ],
-
+    'modules' => require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
 if (YII_ENV_DEV) {

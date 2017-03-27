@@ -28,6 +28,8 @@ class Error
     const COMMON_NO_SUCH_OBJECT         = 100017; //对象不存在
     const UPDATE_FAILED                 = 100018; //更新失败
 
+    const ACCESS_TOKEN_ERROR            = 100019;//access_token错误
+
 
     //////////////////////////账号中心异常错误码////////////////////////////////
 
