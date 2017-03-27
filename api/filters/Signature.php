@@ -3,9 +3,9 @@
  * 签名过滤
  */
 namespace app\filters;
-use app\config\Error;
-use app\helpers\client\AppClient;
-use app\helpers\EncryptTool;
+use common\base\Error;
+use common\helpers\client\AppClient;
+use common\helpers\EncryptTool;
 use yii\base\ActionFilter;
 use Yii;
 use yii\helpers\VarDumper;
@@ -21,7 +21,8 @@ class Signature extends ActionFilter
     /**
      * 用以做签名检查
      */
-    public function filterSign(){
+    public function filterSign()
+    {
         Yii::beginProfile('FILTER-SIGN-'.YII_REQUEST_START_TIME);
         $host = Yii::$app->request->getHostInfo();
         $method = Yii::$app->request->getIsPost()?'post':'get';

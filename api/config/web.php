@@ -55,15 +55,16 @@ $config = [
 
     'modules' => [
         'user' => [
-            'class' => 'service\modules\user\Module',
+            'class' => 'api\modules\user\Module',
         ],
         'room' => [
-            'class' => 'service\modules\room\Module',
+            'class' => 'api\modules\room\Module',
         ],
         'match' => [
-            'class' => 'service\modules\match\Module',
+            'class' => 'api\modules\match\Module',
         ]
     ],
+
     'params' => $params,
 ];
 if (YII_ENV_DEV) {

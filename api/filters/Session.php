@@ -3,9 +3,10 @@
  * 登录状态过滤
  */
 namespace app\filters;
-use app\components\SessionCan;
-use app\config\Error;
-use app\helpers\client\AppClient;
+
+use common\components\SessionCan;
+use common\base\Error;
+use common\helpers\client\AppClient;
 use app\service\UserService;
 use yii\base\ActionFilter;
 use Yii;
