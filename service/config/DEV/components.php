@@ -8,21 +8,28 @@
 
 //////////////开发坏境数据库配置////////////////
 
+const DEV_SERVER_IP = '47.92.0.111';
 $db_config = [
     'db_user' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=47.92.0.111;dbname=hjsk_user',
+        'dsn' => 'mysql:host='.DEV_SERVER_IP.';dbname=hjsk_user',
         'username' => 'boom',
         'password' => 'k9skkultSr&dFYP',
         'charset' => 'utf8mb4',
     ],
     'db_lianpa' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host=192.168.1.14;dbname=boom',
-        'username' => 'root',
-        'password' => 'root',
-        'charset' => 'utf8',
+        'dsn' => 'mysql:host='.DEV_SERVER_IP.';dbname=face_party',
+        'username' => 'boom',
+        'password' => 'k9skkultSr&dFYP',
+        'charset' => 'utf8mb4',
     ],
+    'redis' => [
+        'class' => 'yii\redis\Connection',
+        'hostname' => 'localhost',
+        'port' => 6379,
+        'database' => 0,
+    ]
 ];
 
 return $db_config;

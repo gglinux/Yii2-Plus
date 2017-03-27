@@ -8,7 +8,7 @@ use yii\base\Model;
 
 use service\modules\room\models\ar\PreRoom;
 use service\modules\match\models\ar\Match;
-
+use service\modules\room\services\RoomService;
 use common\base\Exception;
 use common\base\BaseService;
 
@@ -20,7 +20,7 @@ use common\base\BaseService;
 class MatchService extends BaseService
 {
     /**
-     * @brif 创建房间
+     *
      * @return string
      */
 
@@ -106,7 +106,7 @@ class MatchService extends BaseService
                         $intSex = 1;
                     } else {
                         // man is leak
-                        var_dump("man is leak");
+                        var_dump("man is lack");
                         Match::createNewPreRoom();
                         Yii::warning("Man is not enough");
                     }
@@ -119,7 +119,7 @@ class MatchService extends BaseService
                         $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
                     } else {
                         // woman is leak
-                        var_dump("woman is leak");
+                        var_dump("woman is lack");
                         Match::createNewPreRoom();
                         Yii::warning("Woman is not enough");
                     }
@@ -133,7 +133,6 @@ class MatchService extends BaseService
                         $intSex = 2;
                         $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
                     }
-                    
                 }
                 var_dump("match uids");
                 var_dump($arrUserIds);
@@ -157,6 +156,17 @@ class MatchService extends BaseService
                     Yii::error($strLog);
                     return false;
                 }
+                $arrMsgList = [];
+                foreach($arrUserInfos as $item) {
+                    $arrMsgList[] = [
+                        'userId' => $item['user_id'],
+                        'cmd'   => "matchRoom",
+                        'data'  => $arrPreRoomInfo
+                    ];
+                }
+                $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
+                $ret = $client->commitMsgToClients($arrMsgList);
+
                 var_dump($arrPreRoomInfo);
                 Match::rmUserFromQuere($arrUserInfos);
             }
@@ -171,12 +181,21 @@ class MatchService extends BaseService
                     $arrUserIds[] = $item['user_id'];
                 }
                 var_dump("人数达标，删除预备房间，开始正式群聊，结束此次匹配");
-                $ret = Room::createNewRoom($arrPreRoomInfo);
+                $ret = RoomService::createNewRoom($arrPreRoomInfo);
                 if(false === $ret) {
                     $strLog = __CLASS__ . "::". __FUNCTION__ . " call Room createNewRoom error. ". serialize(compact('ret', 'arrPreRoomInfo'));
                     Yii::error($strLog);
                     return false;
                 }
+                $arrMsgList = [];
+                foreach($arrPreRoomInfo as $item) {
+                    $arrMsgList[] = [
+                        'userId' => $item['user_id'],
+                        'cmd'   => "readyRoom",
+                        'data'  => $arrPreRoomInfo
+                    ];
+                }
+
                 Match::rmPreRoomIdFromQueue($intPreRoomId);
                 PreRoom::rmBatchUserPreRoomId($arrUserIds);
                 PreRoom::rmPreRoomInfo($intPreRoomId);
