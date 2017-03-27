@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace app\commands;
+namespace console\commands;
 use yii\console\Controller;
 use service\modules\match\services\MatchService;
 /**

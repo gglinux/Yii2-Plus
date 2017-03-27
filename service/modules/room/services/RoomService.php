@@ -9,13 +9,15 @@ use service\modules\room\models\ar\RoomInfo;
 use service\modules\room\models\ar\RoomUser;
 use service\modules\room\models\ar\IdAlloc;
 use common\base\Exception;
+use service\base\BaseService;
+
 
 /**
  * Class Room
  * 房间服务层代码
  * @package service\models
  */
-class  RoomService extends Model
+class  RoomService extends BaseService
 {
     const TABLE_NAME_ROOM_USER = 'room_user';
 
@@ -56,22 +58,7 @@ class  RoomService extends Model
 
         self::insertUserToRoom($arrUserList, $intRoomId);
 
-        $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
-        $joinRoomMsg = [];
-
-        foreach($arrUserList as $userInfo) {
-            $joinRoomMsg[] = [
-                'userId' => $userInfo['user_id'],
-                'cmd'   => 'joinRoom',
-                'data' => [
-                    'roomId' => $intRoomId,
-                    'userList' => $arrUserList
-                ],
-            ];
-        }
-        $client->commitMsgToClients($joinRoomMsg);
-
-        return true;
+        return $intRoomId;
     }
     /**
      * @brif 将人加入房间内
@@ -223,6 +210,8 @@ class  RoomService extends Model
 
         return RoomUser::find()->where([
             'room_id' => $arrRoomIds,
+        ])->orderBy([
+            'user_role' => SORT_DESC
         ])->all();
     }
 

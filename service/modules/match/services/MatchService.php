@@ -4,13 +4,12 @@ namespace service\modules\match\services;
 
 use Yii;
 
-use yii\base\Model;
 
 use service\modules\room\models\ar\PreRoom;
-use service\modules\match\models\ar\Match;
+use service\modules\match\models\ar\Match as ModelMatch;
 use service\modules\room\services\RoomService;
 use common\base\Exception;
-use common\base\BaseService;
+use service\base\BaseService;
 
 /**
  * Class Match
@@ -19,24 +18,86 @@ use common\base\BaseService;
  */
 class MatchService extends BaseService
 {
+    public static function sayHi(){
+        echo 'hi';
+    }
     /**
-     *
+     * 将用户添加到匹配队列
+     * @param int $userId
+     */
+    public static function joinMatch ($intUserId) {
+        if(empty($intUserId)) {
+            throw new Exception('参数错误');
+        }
+
+        //TODO 需要获取用户信息
+
+        $arrUserInfo = [
+            'user_id' => $intUserId,
+            'sex' => $intUserId == 123 || $intUserId == 234 ? 1 : 2,
+            'is_master' => 1,
+        ];
+
+        return ModelMatch::pushUserToQueue($arrUserInfo);
+    }
+
+    /**
+     * @param array $arrUserInfo
+     * @return \service\modules\match\models\ar\arran
+     * @throws Exception
+     */
+    public static function cancelMatch ($intUserId) {
+        if(empty($intUserId)) {
+            throw new Exception('参数错误');
+        }
+
+
+        //获取用户id
+        $intPreRoomId = PreRoom::getBatchUserPreRoomId([$intUserId]);
+        $intPreRoomId = $intPreRoomId[0];
+        //TODO 需要获取用户信息
+        $liteUserInfo = [];
+        if ($intPreRoomId) {
+            $arrPreRoomInfo = PreRoom::getBatchUserPreRoomId([$intUserId]);
+            foreach($arrPreRoomInfo['user_list'] as $item) {
+                if($item['user_id'] == $intUserId){
+                    $liteUserInfo = $item;
+                    break;
+                }
+            }
+            PreRoom::rmBatchUserPreRoomId([$intUserId], $intPreRoomId);
+
+            ModelMatch::rmUserFromPreRoom($intUserId, $intPreRoomId);
+
+        } else {
+            ModelMatch::rmBatchUserFromQueue([
+                [
+                    'user_id' => $intUserId,
+                    'sex' => 1
+                ]
+            ]);
+        }
+
+        return true;
+    }
+    /**
+     * 匹配主方法
      * @return string
      */
 
-    public function matchRoom()
+    public static function matchRoom()
     {
         //clear redis key 
         //del pre_room_info user_pre_room match_queue_man match_queue_woman match_queue_pre_room
         //目前是单进程模式
         
         //获取队列中的预备房间ID
-        $intPreRoomId =  Match::getPreRoomIdFromQueue();
+        $intPreRoomId =  ModelMatch::getPreRoomIdFromQueue();
         
         //获取等待队列长度
-        $intPreRoomCount = Match::getPreRoomQueueLength(Match::REDIS_KEY_MATCH_QUEUE_PRE_ROOM);
-        $intManWaitCount = Match::getMatchQueueLength(Match::REDIS_KEY_MATCH_QUEUE_MAN);
-        $intWomanWaitCount = Match::getMatchQueueLength(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
+        $intPreRoomCount = ModelMatch::getPreRoomQueueLength(ModelMatch::REDIS_KEY_MATCH_QUEUE_PRE_ROOM);
+        $intManWaitCount = ModelMatch::getMatchQueueLength(ModelMatch::REDIS_KEY_MATCH_QUEUE_MAN);
+        $intWomanWaitCount = ModelMatch::getMatchQueueLength(ModelMatch::REDIS_KEY_MATCH_QUEUE_WOMAN);
         
         var_dump("current pre room id $intPreRoomId");
 
@@ -44,9 +105,10 @@ class MatchService extends BaseService
         var_dump("current intManWaitCount $intManWaitCount");
         var_dump("current intWomanWaitCount $intWomanWaitCount");
         if($intPreRoomId) {
+            //获取预备房间信息
             $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
-            var_dump('当前预备房间匹配信息');
-            var_dump($arrPreRoomInfo);
+
+            //var_dump($arrPreRoomInfo);
         }
         if($intWomanWaitCount == 0 && $intManWaitCount == 0) {
             //no user wait
@@ -58,23 +120,26 @@ class MatchService extends BaseService
             //need create room
             var_dump("pre room is empty");
             var_dump("create pre room");
-            $arrPreRoomInfo = Match::createNewPreRoom();
+            //如果队列中没有预备房间,则创建一个
+            $arrPreRoomInfo = ModelMatch::createNewPreRoom();
             $intPreRoomId = $arrPreRoomInfo['pre_room_id'];
-            var_dump($arrPreRoomInfo);
+            //var_dump($arrPreRoomInfo);
         } 
         //start
-        $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
+        //获取预备房间的信息
+        // $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
+        var_dump('当前预备房间匹配信息');
         var_dump($arrPreRoomInfo);
         
         if(empty($arrPreRoomInfo)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::getPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
             Yii::error($strLog);
-            $ret = Match::rmPreRoomIdFromQueue($intPreRoomId);
+            //如果获取到的预备房间是无效的,则把预备房间从匹配队列删除
+            $ret = ModelMatch::rmPreRoomIdFromQueue($intPreRoomId);
             return false;
         }
         var_dump("current pre room info");
         var_dump($arrPreRoomInfo);
-        
         $intRetry = 0;
         while(1) {
             $arrUserInfos = [];
@@ -102,12 +167,14 @@ class MatchService extends BaseService
                     var_dump("need man");
                     //need man
                     if ($intManWaitCount > 0) {
-                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_MAN);
+                        //获取一个队列中的用户
+                        $arrUserIds = ModelMatch::getUserFromQueue(ModelMatch::REDIS_KEY_MATCH_QUEUE_MAN);
                         $intSex = 1;
                     } else {
                         // man is leak
                         var_dump("man is lack");
-                        Match::createNewPreRoom();
+                        // 当前匹配的预备房间已经放不下了,需要重新建立预备房间
+                        ModelMatch::createNewPreRoom();
                         Yii::warning("Man is not enough");
                     }
                     
@@ -116,59 +183,76 @@ class MatchService extends BaseService
                     var_dump("need woman");
                     if ($intWomanWaitCount > 0) {
                         $intSex = 2;
-                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
+                        //获取一个队列中的用户
+                        $arrUserIds = ModelMatch::getUserFromQueue(ModelMatch::REDIS_KEY_MATCH_QUEUE_WOMAN);
                     } else {
                         // woman is leak
                         var_dump("woman is lack");
-                        Match::createNewPreRoom();
+                        // 当前匹配的预备房间已经放不下了,需要重新建立预备房间
+                        ModelMatch::createNewPreRoom();
                         Yii::warning("Woman is not enough");
                     }
                 } else {
                     //need everyone
                     var_dump("need everyone");
+                    //获取一个队列中的用户
                     if ($intManWaitCount > $intWomanWaitCount) {
                         $intSex = 1;
-                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_MAN);
+                        $arrUserIds = ModelMatch::getUserFromQueue(ModelMatch::REDIS_KEY_MATCH_QUEUE_MAN);
                     } else {
                         $intSex = 2;
-                        $arrUserIds = Match::getUserFromQueue(Match::REDIS_KEY_MATCH_QUEUE_WOMAN);
+                        $arrUserIds = ModelMatch::getUserFromQueue(ModelMatch::REDIS_KEY_MATCH_QUEUE_WOMAN);
                     }
                 }
                 var_dump("match uids");
                 var_dump($arrUserIds);
                 var_dump("match sex $intSex");
-                
+
+
+                //需要获取用户信息
                 
                 foreach($arrUserIds as $item) {
                     $arrUserInfos[] = [
                         'user_id' => $item,
                         'sex' => $intSex,
+                        'is_master' => 1,
                     ];
                 }
-                var_dump('Match::addUsersToPreRoom');
+
                 if (count($arrUserInfos) === 0) {
                     var_dump("没有匹配符合条件的用户，结束此次匹配");
                     break;
                 }
-                $arrPreRoomInfo = Match::addUsersToPreRoom($arrUserInfos, $intPreRoomId);
+
+                var_dump($arrUserInfos);
+
+                //将匹配到的用户存储到预备房间信息里
+                $arrPreRoomInfo = ModelMatch::addUsersToPreRoom($arrUserInfos, $intPreRoomId);
+
                 if(false === $arrPreRoomInfo) {
-                    $strLog = __CLASS__ . "::". __FUNCTION__ . " Match::addUsersToPreRoom error. ". serialize(compact('arrUsersInfo', 'intPreRoomId'));
+                    $strLog = __CLASS__ . "::". __FUNCTION__ . " ModelMatch::addUsersToPreRoom error. ". serialize(compact('arrUsersInfo', 'intPreRoomId'));
                     Yii::error($strLog);
                     return false;
                 }
                 $arrMsgList = [];
-                foreach($arrUserInfos as $item) {
+                foreach($arrPreRoomInfo['user_list'] as $item) {
                     $arrMsgList[] = [
                         'userId' => $item['user_id'],
-                        'cmd'   => "matchRoom",
-                        'data'  => $arrPreRoomInfo
+                        'cmd'   => "matchUser",
+                        'data'  => $arrPreRoomInfo['user_list']
                     ];
                 }
-                $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
+                //向客户端发送匹配到用户的消息
+                $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
                 $ret = $client->commitMsgToClients($arrMsgList);
-
+                if(false == $ret) {
+                    $strLog = __CLASS__ . "::". __FUNCTION__ . " Hprose call commitMsgToClients error. ". serialize(compact('arrMsgList', 'ret'));
+                    Yii::error($strLog);
+                    //return false;
+                }
                 var_dump($arrPreRoomInfo);
-                Match::rmUserFromQuere($arrUserInfos);
+                //将匹配到的用户从匹配队列里删除
+                ModelMatch::rmBatchUserFromQueue($arrUserInfos);
             }
             
             if(count($arrPreRoomInfo['user_list']) == 6) {
@@ -181,23 +265,38 @@ class MatchService extends BaseService
                     $arrUserIds[] = $item['user_id'];
                 }
                 var_dump("人数达标，删除预备房间，开始正式群聊，结束此次匹配");
-                $ret = RoomService::createNewRoom($arrPreRoomInfo);
+                //创建房间
+                $intRoomId = RoomService::createNewRoom($arrPreRoomInfo);
                 if(false === $ret) {
                     $strLog = __CLASS__ . "::". __FUNCTION__ . " call Room createNewRoom error. ". serialize(compact('ret', 'arrPreRoomInfo'));
                     Yii::error($strLog);
                     return false;
                 }
                 $arrMsgList = [];
-                foreach($arrPreRoomInfo as $item) {
+                foreach($arrPreRoomInfo['user_list'] as $item) {
                     $arrMsgList[] = [
                         'userId' => $item['user_id'],
                         'cmd'   => "readyRoom",
-                        'data'  => $arrPreRoomInfo
+                        'data'  => [
+                            'roomId' => $intRoomId,
+                            'userList' => $arrPreRoomInfo['user_list']
+                        ]
                     ];
                 }
+                //向客户端发送匹配成功,进入房间的信息
+                $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
+                $ret = $client->commitMsgToClients($arrMsgList);
+                if(false == $ret) {
+                    $strLog = __CLASS__ . "::". __FUNCTION__ . " Hprose call commitMsgToClients error. ". serialize(compact('arrMsgList', 'ret'));
+                    Yii::error($strLog);
+                    //return false;
+                }
 
-                Match::rmPreRoomIdFromQueue($intPreRoomId);
+                //把预备房间从队列里删除
+                ModelMatch::rmPreRoomIdFromQueue($intPreRoomId);
+                //删除用户的匹配房间信息
                 PreRoom::rmBatchUserPreRoomId($arrUserIds);
+                //删除预备房间信息
                 PreRoom::rmPreRoomInfo($intPreRoomId);
                 // create room
                 break;
@@ -207,6 +306,7 @@ class MatchService extends BaseService
                     $arrUserIds[] = $item['user_id'];
                 }
                 if (count($arrUserIds) > 0) {
+                    //设置用户的预备房间信息
                     PreRoom::setBatchUserPreRoomId($arrUserIds, $intPreRoomId);
                 }
                 $intRetry ++;

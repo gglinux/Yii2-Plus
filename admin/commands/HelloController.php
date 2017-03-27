@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace admin\commands;
+namespace app\commands;
 
 use yii\console\Controller;
 

@@ -4,9 +4,7 @@ namespace service\modules\match\controllers;
 
 
 use Yii;
-use yii\filters\AccessControl;
 use service\base\ServiceController;
-use yii\filters\VerbFilter;
 use Hprose\Http\Server;
 
 use yii\web\Response;
@@ -34,11 +32,7 @@ class MatchController extends ServiceController
      */
     public function actions()
     {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
+
     }
 
     /**
@@ -47,20 +41,27 @@ class MatchController extends ServiceController
      */
     public function actionIndex()
     {
-        // $server = new Server();
-        // $anObject = new User();
-
-        // $server->addInstanceMethods($anObject);
-        // return $server->start();
+        $server = new Server();
+        $service = new MatchService();
+        $server->addMethods([
+            'joinMatch',
+            'cancelMatch'
+        ], $service);
+        return $server->start();
     }
+    public function actionTest()
+    {
+        return MatchService::sayHi();
+    }
+
 
     public function actionSendMessage(){
 
-        $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
+        $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
         $arrMsgList = [
             [
-                "userId" => 123,
-                "cmd"  => "Msg",
+                "roomId" => 39,
+                "cmd"  => "showWord",
                 "data" => [
                     'hh'=> 'aaaa',
                 ]

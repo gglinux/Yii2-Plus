@@ -7,6 +7,8 @@ use service\base\ServiceController;
 use Hprose\Http\Server;
 
 use service\modules\room\services\RoomService;
+use service\modules\room\models\ar\PreRoom;
+
 use yii\web\Response;
 
 
@@ -24,6 +26,7 @@ class RoomController extends ServiceController
 
     public static $defaultIntValue = 1;
     public $defaultAction = 'index';
+    public $layout = false;
     /**
      * @inheritdoc
      */
@@ -53,11 +56,15 @@ class RoomController extends ServiceController
      */
     public function actionIndex()
     {
-        // $server = new Server();
-        // $anObject = new User();
+         $server = new Server();
+         $server->add(new RoomService());
+         return $server->start();
+    }
 
-        // $server->addInstanceMethods($anObject);
-        // return $server->start();
+    public function actionTest (){
+        return PreRoom::rmBatchUserPreRoomId(
+            [229,228]
+        );
     }
 
 
@@ -69,6 +76,32 @@ class RoomController extends ServiceController
             'exit_status' => 1,
         ];
         return RoomService::updateRoomUserInfo($arrParam);
+    }
+
+    /**
+     *
+     * @param $userId
+     * @return bool
+     */
+    public function actionMatch($user_id){
+
+        $tokenList = [
+            '123' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjMsImlhdCI6MTQ4OTkwMzE0MiwiZXhwIjoxNTA1NDU1MTQyfQ.UNiY3obDhFl3EuPWwE5MR1ojXz2n-F_TBI6T7vqKai0',
+            '234' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjM0IiwiaWF0IjoxNDkwNTg3MTM4LCJleHAiOjE1MDYxMzkxMzh9.59KxajILnQjk_MGFceIz2gPkRaXw76u8ABOGdOYUF8k',
+            '345' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMzQ1IiwiaWF0IjoxNDkwNTg3MTYzLCJleHAiOjE1MDYxMzkxNjN9.ZWqOPIEJ1EgH65Pqx51jjFO4cH00WsrKA3zI8CXasUs',
+            '456' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDU2IiwiaWF0IjoxNDkwNTg3MTc4LCJleHAiOjE1MDYxMzkxNzh9.qjPmmKE33f_QOIUWyR70b3cLMmanZkO9garkSvoP11Y',
+            '567' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNTY3IiwiaWF0IjoxNDkwNTg3MTk0LCJleHAiOjE1MDYxMzkxOTR9.kfYDXSQMH7iGvTkk_Ydf2FLue1Kl4ogR_-P3VsM5IcQ',
+            '678' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjc4IiwiaWF0IjoxNDkwNTg3MjE3LCJleHAiOjE1MDYxMzkyMTd9.WRWnlakfFIFSCdmSPM9mwv3vB2EEyD6kYGJEqoxI7F8',
+            '789' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzg5IiwiaWF0IjoxNDkwNTg3MjUzLCJleHAiOjE1MDYxMzkyNTN9.ul8Ae1XRjJi-LtFY3wRXENgvlOj0TRe4DZcz-dZ-E1A',
+            '890' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODkwIiwiaWF0IjoxNDkwNTg3MjczLCJleHAiOjE1MDYxMzkyNzN9.Sw1F6xSQmg54x4KtEMlTRuvHkDk2SmAv12pGse7Waew',
+
+        ];
+        $token = $tokenList[$user_id];
+        Yii::$app->response->format=Response::FORMAT_HTML;
+
+        return $this->render('socket-test/index', [
+            'token' => $token
+        ]);
     }
 
 
@@ -93,15 +126,16 @@ class RoomController extends ServiceController
      */
     public function actionCall()
     {
+        $intRoomId = 31;
         $updateRoomInfo = RoomService::updateRoomInfo([
-            'room_id' => 30,
+            'room_id' => $intRoomId,
             'game_status' => 1,
         ]);
-        $roomInfo = RoomService::getBatchRoomInfo([30]);
-        $userInfos = RoomService::getBatchRoomUsers([30]);
+        $roomInfo = RoomService::getBatchRoomInfo([$intRoomId]);
+        $userInfos = RoomService::getBatchRoomUsers([$intRoomId]);
         $userInRoomInfo = RoomService::getUserInRoom([
-            'user_id' => 205,
-            'room_id' => 30
+            'user_id' => 216,
+            'room_id' => $intRoomId
         ]);
         $arrRet = compact('roomInfo', 'userInfos', 'userInRoomInfo', 'updateRoomInfo');
         return $arrRet;
