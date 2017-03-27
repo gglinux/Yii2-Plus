@@ -60,8 +60,8 @@ class MatchController extends ServiceController
         $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
         $arrMsgList = [
             [
-                "userId" => 123,
-                "cmd"  => "Msg",
+                "roomId" => 39,
+                "cmd"  => "showWord",
                 "data" => [
                     'hh'=> 'aaaa',
                 ]

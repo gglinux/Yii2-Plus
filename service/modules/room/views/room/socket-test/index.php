@@ -35,7 +35,13 @@
   
 
     socket.on('message', function(o){
-        console.log('recive message msg', o); 
+        console.log('recive message msg', o);
+        if(o.cmd == 'readyRoom') {
+            socket.emit('message', {
+                cmd: 'joinRoom',
+                roomId: o.data.roomId
+            })
+        }
         
     });
 

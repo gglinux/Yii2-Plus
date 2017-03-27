@@ -45,6 +45,10 @@ class MatchController extends Controller
     }
 
     public function actionMatching() {
-        MatchService::matchRoom();
+        while(1) {
+            MatchService::matchRoom();
+            sleep(1);
+        }
+
     }
 }

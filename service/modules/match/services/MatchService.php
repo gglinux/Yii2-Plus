@@ -31,9 +31,10 @@ class MatchService extends BaseService
         }
 
         //TODO 需要获取用户信息
+
         $arrUserInfo = [
             'user_id' => $intUserId,
-            'sex' => rand(1,2),
+            'sex' => $intUserId == 123 || $intUserId == 234 ? 1 : 2,
             'is_master' => 1,
         ];
 
@@ -234,7 +235,7 @@ class MatchService extends BaseService
                     return false;
                 }
                 $arrMsgList = [];
-                foreach($arrUserInfos as $item) {
+                foreach($arrPreRoomInfo['user_list'] as $item) {
                     $arrMsgList[] = [
                         'userId' => $item['user_id'],
                         'cmd'   => "matchUser",
@@ -265,22 +266,25 @@ class MatchService extends BaseService
                 }
                 var_dump("人数达标，删除预备房间，开始正式群聊，结束此次匹配");
                 //创建房间
-                $ret = RoomService::createNewRoom($arrPreRoomInfo);
+                $intRoomId = RoomService::createNewRoom($arrPreRoomInfo);
                 if(false === $ret) {
                     $strLog = __CLASS__ . "::". __FUNCTION__ . " call Room createNewRoom error. ". serialize(compact('ret', 'arrPreRoomInfo'));
                     Yii::error($strLog);
                     return false;
                 }
                 $arrMsgList = [];
-                foreach($arrPreRoomInfo as $item) {
+                foreach($arrPreRoomInfo['user_list'] as $item) {
                     $arrMsgList[] = [
                         'userId' => $item['user_id'],
                         'cmd'   => "readyRoom",
-                        'data'  => $arrPreRoomInfo['user_list']
+                        'data'  => [
+                            'roomId' => $intRoomId,
+                            'userList' => $arrPreRoomInfo['user_list']
+                        ]
                     ];
                 }
                 //向客户端发送匹配成功,进入房间的信息
-                $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
+                $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
                 $ret = $client->commitMsgToClients($arrMsgList);
                 if(false == $ret) {
                     $strLog = __CLASS__ . "::". __FUNCTION__ . " Hprose call commitMsgToClients error. ". serialize(compact('arrMsgList', 'ret'));

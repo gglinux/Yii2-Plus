@@ -58,22 +58,7 @@ class  RoomService extends BaseService
 
         self::insertUserToRoom($arrUserList, $intRoomId);
 
-        $client = new \Hprose\Http\Client(Yii::$app->params['HproseServiceHost'], false);
-        $joinRoomMsg = [];
-
-        foreach($arrUserList as $userInfo) {
-            $joinRoomMsg[] = [
-                'userId' => $userInfo['user_id'],
-                'cmd'   => 'joinRoom',
-                'data' => [
-                    'roomId' => $intRoomId,
-                    'userList' => $arrUserList
-                ],
-            ];
-        }
-        $client->commitMsgToClients($joinRoomMsg);
-
-        return true;
+        return $intRoomId;
     }
     /**
      * @brif 将人加入房间内
