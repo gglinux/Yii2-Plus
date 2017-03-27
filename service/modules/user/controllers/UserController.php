@@ -37,4 +37,16 @@ class UserController extends ServiceController
         $server->add('registerTrad', $service);
         return $server->start();
     }
+
+    public function actionIndex()
+    {
+        $service = new UserService();
+        $server = new Server();
+        $server->add('registerThrid', $service);
+        $server->add('registerTrad', $service);
+        $server->add('loginTrad', $service);
+        $server->add('loginThrid', $service);
+        $server->add('updateUserBase',$service);
+        return $server->start();
+    }
 }

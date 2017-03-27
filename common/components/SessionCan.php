@@ -9,7 +9,7 @@
 namespace common\components;
 
 /**
- * 全局Session管理
+ * 全局用户信息管理
  * Class SessionCan
  * @package common\components
  */
@@ -21,8 +21,6 @@ class SessionCan
      */
     private static $uid;
 
-    private static $sid;
-
     private static $phone;
 
     private function __construct(){}
@@ -32,7 +30,6 @@ class SessionCan
     public static function init($session)
     {
         self::$uid = isset($session['uid'])?floatval($session['uid']):null;
-        self::$sid = isset($session['sid'])?$session['sid']:null;
         self::$phone = isset($session['phone'])?$session['phone']:null;
     }
 
@@ -41,13 +38,9 @@ class SessionCan
         return self::$uid;
     }
 
-    public static function getSid()
-    {
-        return self::$sid;
-    }
-
     public static function getPhone()
     {
         return self::$phone;
     }
+
 }

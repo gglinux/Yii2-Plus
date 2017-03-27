@@ -18,11 +18,5 @@ class RegisterController extends ApiController
 
     }
 
-    //第三方账号注册
-    public function actionThrid()
-    {
-
-    }
-
 
 }

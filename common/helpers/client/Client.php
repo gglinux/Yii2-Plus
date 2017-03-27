@@ -13,7 +13,8 @@ namespace common\helpers\client;
  * Class Client
  * @package common\helpers\client
  */
-abstract class Client {
+abstract class Client
+{
 
     private  static $_INSTANCE;
 

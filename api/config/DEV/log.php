@@ -11,18 +11,18 @@ $log_config =  [
     [
         'class' => 'yii\log\FileTarget',
         'levels' => ['error', 'warning', 'info'],
-        'logVars' => [],
     ],
     [
-        'class' => 'yii\log\FileTarget',
+        'class' => 'yii\log\EmailTarget',
         'levels' => ['error'],
-        'logVars' => [],
-        'logFile'=>'@runtime/logs/api_error.log',
-        'maxFileSize'=>4096,//日志大小
-        'maxLogFiles'=>50,//保存最大个数，Yii会按时间保留最近50个文件
         'categories' => [
             'application.api.*',
             'api.*',
+        ],
+        'message' => [
+            'from' => ['log@hjsk.com'],
+            'to' => ['admin@hjsk.com', 'developer@hjsk.com'],
+            'subject' => 'Database errors at hjsk.com',
         ],
     ],
     //请求分析日志

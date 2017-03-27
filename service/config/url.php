@@ -10,8 +10,7 @@
 $rules = [
     'test'         =>'site/index',
     /////////////////账号中心//////////////////
-    'user/register'=>'/user/user/register',
-    'user/login'=>'/user/user/login'
+    'user'=>'/user/user/index'
 ];
 
 return $rules;

@@ -9,9 +9,6 @@
 //////////////开发坏境RPC配置////////////////
 
 $rpc_config = [
-    'test_rpc' =>'http://service.dev.dabaozha.com/test',
-    'user_login_rpc' =>'http://service.dev.dabaozha.com/user/login',
-    'user_register_rpc' =>'http://service.dev.dabaozha.com/user/register',
 
 ];
 

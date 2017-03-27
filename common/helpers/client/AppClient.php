@@ -5,13 +5,14 @@ use common\base\Error;
 use common\base\Exception;
 use Yii;
 
-/**
- * 为客户端数据建模
- * User: duanzongxiang
- * DateTime:2015-03-10
- */
 
-class AppClient extends Client {
+/**
+ * 客户端模型
+ * Class AppClient
+ * @package common\helpers\client
+ */
+class AppClient extends Client
+{
 
     private static $_INSTANCE;
     private $platForm;  //平台
@@ -21,7 +22,7 @@ class AppClient extends Client {
     private $mmodel;   //手机生产型号
     private $cidentity; //手机唯一标识符
     private $network;   //手机网络类型
-    private $business;  //业务类型 1-金斧子app
+    private $business;  //业务类型 脸趴
 
     /**
      * @param array $param
@@ -148,10 +149,11 @@ class AppClient extends Client {
 
     /**
      * @return mixed 获取操作系统
-     */public function getSystem()
-{
-    return $this->sysVer;
-}
+     */
+    public function getSystem()
+    {
+        return $this->sysVer;
+    }
 
     public function info()
     {

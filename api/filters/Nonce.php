@@ -13,7 +13,8 @@ class Nonce extends ActionFilter
 {
     public function beforeAction($action)
     {
-        return $this->filterNonce();
+        $this->filterNonce();
+        return parent::beforeAction($action);
     }
 
     public function filterNonce()
