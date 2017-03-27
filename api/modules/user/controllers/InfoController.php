@@ -8,7 +8,6 @@
 
 namespace api\modules\user\controllers;
 
-use api\filters\AccessToken;
 use common\base\Error;
 use common\components\SessionCan;
 use Hprose\Http\Client;
@@ -43,7 +42,7 @@ class InfoController extends ApiController
             'gender' => $sex,
             'push_token' => $push_token,
         ];
-        $result = $userService->updateUserBase($params);
+        $result = $userService->updateUserBase($uid,$params);
         if ($result) {
             Yii::$app->response->ok();
         }
