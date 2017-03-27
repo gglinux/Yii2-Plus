@@ -24,11 +24,11 @@ $config = [
 
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => require($ENV_CONFIG_PATH.'/log.php'),
+            'targets' => require(__DIR__.'/log.php'),
         ],
 
-    ], require($ENV_CONFIG_PATH.'/components.php')),
-    'modules' => require(__DIR__ . '/modules.php'),
+    ], require(__DIR__.'/components.php')),
+    //'modules' => require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
 if (YII_ENV_DEV) {

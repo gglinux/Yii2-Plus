@@ -6,6 +6,7 @@ $ENV_CONFIG_PATH = __DIR__.'/'.YII_ENV; //当前环境配置所在目录
 
 Yii::setAlias('@service', dirname(dirname(__DIR__)) . '/service');
 Yii::setAlias('@common', dirname(dirname(__DIR__)) . '/common');
+Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
 
 $config = [
     'id' => 'service',
@@ -41,27 +42,13 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => require($ENV_CONFIG_PATH.'/log.php'),
         ],
-        'redis' => require(__DIR__ . '/redis.php'),
-        // 'db' => require(__DIR__ . '/hjsk_db.php'),
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => true,
             'rules' => require('url.php'),
         ],
     ], require($ENV_CONFIG_PATH.'/components.php')),
-
-
-    'modules' => [
-        'user' => [
-            'class' => 'service\modules\user\Module',
-        ],
-        'room' => [
-            'class' => 'service\modules\room\Module',
-        ],
-        'match' => [
-            'class' => 'service\modules\match\Module',
-        ]
-    ],
+    'modules' => require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
 if (YII_ENV_DEV) {

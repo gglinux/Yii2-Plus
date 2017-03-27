@@ -102,11 +102,7 @@ class PreRoom extends \yii\db\ActiveRecord
         }
         // $ret = $redis->HMSET(self::REDIS_KEY_USER_PRE_ROOM , $arrRedisParam);
         $ret = $redis->executeCommand('hmset', $arrRedisParam);
-        if($ret) {
-            return  $ret;
-        } else {
-            return $ret;
-        }
+        return $ret;
         
     }
 
@@ -125,11 +121,7 @@ class PreRoom extends \yii\db\ActiveRecord
         //$ret = $redis->HMGET(self::REDIS_KEY_USER_PRE_ROOM , $arrRedisParam);
         $ret = $redis->executeCommand('hmget', $arrRedisParam);
 
-        if($ret) {
-            return  $ret;
-        } else {
-            return $ret;
-        }
+        return $ret;
         
     }
 
@@ -142,19 +134,11 @@ class PreRoom extends \yii\db\ActiveRecord
         $redis = self::getDb();
         $arrRedisParam = [];
         $arrRedisParam[] = self::REDIS_KEY_USER_PRE_ROOM;
-        //操了， yii redis 不支持批量删hash
-        foreach($arrUserIds as $id) {
-            $ret = $redis->hdel(self::REDIS_KEY_USER_PRE_ROOM, $id);
 
-        }
-        // $ret = $redis->HDEL(self::REDIS_KEY_USER_PRE_ROOM , $intUserId);
-        return true;
-        if($ret) {
-            return  ;
-        } else {
-            return $ret;
-        }
-        
+        $arrRedisParam = array_merge($arrRedisParam, $arrUserIds);
+        $ret = $redis->executeCommand('hdel', $arrRedisParam);
+        return $ret;
+
     }
    
 }

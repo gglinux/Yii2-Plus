@@ -74,7 +74,7 @@ class Match extends \yii\db\ActiveRecord
      * @param array 
      * @return string 
      */
-    public static function rmUserFromQuere($arrUserInfos) {
+    public static function rmBatchUserFromQueue($arrUserInfos) {
         $redis = self::getDb();
         $arrManList = [
             self::REDIS_KEY_MATCH_QUEUE_MAN
@@ -99,7 +99,7 @@ class Match extends \yii\db\ActiveRecord
         if (count($arrWomanList) > 1) {
             $ret = $redis->executeCommand('zrem',$arrWomanList);
         }
-       
+
       
         return $ret;
     }
@@ -171,6 +171,24 @@ class Match extends \yii\db\ActiveRecord
         }
 
         $arrPreRoomInfo['user_list'] = array_merge($arrPreRoomInfo['user_list'], $arrUserInfos);
+        //排序,把 认证趴主 排在前面 (好像也没啥用)
+        $_tmpList = [];
+        $_userList = [];
+        foreach($arrPreRoomInfo['user_list'] as $item) {
+            if(!isset($item['is_master'])) {
+                $item['is_master'] = 0;
+            }
+            $_userList[$item['user_id']] = $item;
+            $_tmpList[$item['user_id']] =$item['is_master'];
+        }
+        arsort($_tmpList);
+        $arrUserList = [];
+        foreach($_tmpList as $key => $item) {
+            $arrUserList[] = $_userList[$key];
+        }
+
+        $arrPreRoomInfo['user_list'] = $arrUserList;
+
         $ret = PreRoom::setPreRoomInfo($arrPreRoomInfo);
         if(empty($ret)) {
             $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::setPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
@@ -180,6 +198,45 @@ class Match extends \yii\db\ActiveRecord
         return $arrPreRoomInfo;
         
        
+    }
+
+    /**
+     * 将人从预备房间删除
+     * @param number $intUserId
+     * @param number $intPreRoomId
+     * @return arran arrPreRoomInfo
+     */
+    public static function rmUserFromPreRoom ($intUserId, $intPreRoomId){
+
+        $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
+        //return 1;
+        if(empty($intUserId)) {
+            $strLog = __CLASS__ . "::". __FUNCTION__ . " arrUserInfos is empty. ". serialize(compact('arrUserInfos', 'intPreRoomId'));
+            Yii::error($strLog);
+            return false;
+        }
+        if(empty($arrPreRoomInfo)) {
+            $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::getPreRoomInfo error. ". serialize(compact('arrPreRoomInfo', 'intPreRoomId'));
+            Yii::error($strLog);
+            return false;
+        }
+
+        foreach($arrPreRoomInfo['user_list'] as $index => $item) {
+            if($item['user_id'] == $intUserId) {
+                unset($arrPreRoomInfo['user_list'][$index]);
+            }
+        }
+        $arrPreRoomInfo['user_list'] = array_values($arrPreRoomInfo['user_list']);
+
+        $ret = PreRoom::setPreRoomInfo($arrPreRoomInfo);
+        if(empty($ret)) {
+            $strLog = __CLASS__ . "::". __FUNCTION__ . " PreRoom::setPreRoomInfo error. ". serialize(compact('arrPreRoomInfo'));
+            Yii::error($strLog);
+            return false;
+        }
+        return true;
+
+
     }
 
     
