@@ -16,6 +16,10 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
     );
 
     public static $prefixLengthsPsr4 = array (
+        'z' => 
+        array (
+            'zhuravljov\\yii\\queue\\' => 21,
+        ),
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
@@ -78,6 +82,10 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
     );
 
     public static $prefixDirsPsr4 = array (
+        'zhuravljov\\yii\\queue\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zhuravljov/yii2-queue/src',
+        ),
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',
@@ -217,13 +225,6 @@ class ComposerStaticInit2b10a13f3edaa8de7996e968cfc3d172
                 1 => __DIR__ . '/..' . '/phpdocumentor/reflection/src',
                 2 => __DIR__ . '/..' . '/phpdocumentor/reflection/tests/unit',
                 3 => __DIR__ . '/..' . '/phpdocumentor/reflection/tests/mocks',
-            ),
-        ),
-        'h' => 
-        array (
-            'hjsk' => 
-            array (
-                0 => __DIR__ . '/../..' . '/src',
             ),
         ),
         'P' => 

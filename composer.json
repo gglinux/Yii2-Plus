@@ -20,7 +20,9 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "hprose/hprose-yii": "^2.0" ,
         "yiisoft/yii2-redis": "~2.0.0",
-        "firebase/php-jwt":"4.0.0"
+
+        "firebase/php-jwt":"4.0.0",
+        "zhuravljov/yii2-queue": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

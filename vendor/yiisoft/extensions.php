@@ -66,4 +66,13 @@ return array (
       '@yii/apidoc' => $vendorDir . '/yiisoft/yii2-apidoc',
     ),
   ),
+  'zhuravljov/yii2-queue' => 
+  array (
+    'name' => 'zhuravljov/yii2-queue',
+    'version' => '0.10.0.0',
+    'alias' => 
+    array (
+      '@zhuravljov/yii/queue' => $vendorDir . '/zhuravljov/yii2-queue/src',
+    ),
+  ),
 );

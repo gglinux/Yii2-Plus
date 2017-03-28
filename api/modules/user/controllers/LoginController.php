@@ -46,8 +46,11 @@ class LoginController extends ApiController
 
         $other = ['face'=>$headicon,'nick_name'=>$nickname,'c_ip'=> (AppClient::getInstance())->getIP(),'c_business'=>(AppClient::getInstance())->getBusiness()];
         $userInfo = $userService->loginThrid($uuid, $loginWay, '', $other);
+        $jwtdata = [
+            'uid' => $userInfo['uid']
+        ];
         if ($userInfo['uid']) {
-            $userInfo['access_token'] = Jwt::createJwt($userInfo);
+            $userInfo['access_token'] = Jwt::createJwt($jwtdata);
             Yii::$app->response->success($userInfo);
         }
         Yii::$app->response->error($userInfo['code'],$userInfo['msg']);

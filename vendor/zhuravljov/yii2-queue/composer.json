@@ -1,0 +1,36 @@
+{
+    "name": "zhuravljov/yii2-queue",
+    "description": "Yii2 Queue Extension which supported DB, Redis, RabbitMQ, Beanstalk and Gearman",
+    "type": "yii2-extension",
+    "keywords": ["yii", "queue", "async", "db", "redis", "rabbitmq", "beanstalk", "gearman"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Roman Zhuravlev",
+            "email": "zhuravljov@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/zhuravljov/yii2-queue/issues",
+        "source": "https://github.com/zhuravljov/yii2-queue",
+        "docs": "https://github.com/zhuravljov/yii2-queue/blob/master/docs/guide"
+    },
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-redis": "*",
+        "php-amqplib/php-amqplib": "*",
+        "pda/pheanstalk": "*"
+    },
+    "suggest": {
+        "ext-pcntl": "Needed to support process signals."
+    },
+    "autoload": {
+        "psr-4": {
+            "zhuravljov\\yii\\queue\\": "src"
+        }
+    }
+}
