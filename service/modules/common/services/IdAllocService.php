@@ -3,7 +3,7 @@
 namespace service\modules\common\services;
 
 
-use service\modules\common\models\ar\IdAlloc;
+use service\modules\common\models\IdAlloc;
 use common\base\Exception;
 use service\base\BaseService;
 

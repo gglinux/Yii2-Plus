@@ -47,6 +47,9 @@ class UserController extends ServiceController
         $server->add('loginTrad', $service);
         $server->add('loginThrid', $service);
         $server->add('updateUserBase',$service);
+
+        $server->add('setUserExtendInfo',$service);
+        $server->add('getUserExtendInfo',$service);
         return $server->start();
     }
 }

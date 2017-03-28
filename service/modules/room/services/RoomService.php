@@ -9,7 +9,7 @@ use service\modules\room\models\ar\RoomUser;
 use common\base\Exception;
 use service\base\BaseService;
 use service\modules\common\services\CommonService;
-use service\modules\common\models\ar\IdAlloc;
+use service\modules\common\models\IdAlloc;
 
 
 
@@ -85,7 +85,20 @@ class  RoomService extends BaseService
                 $item['user_role'] = self::USER_ROLE_NORMAL;
             }
             $arrParam[] = [$intRoomId, $item['user_id'], $item['user_role'],  $strNow, self::DEFAULT_STATUS_VALUE, 0];
+            try {
+                $client = CommonService::serviceClient('/user/user','php');
+                $arrParam = [
+                    'user_id' => $item['user_id'],
+                    'field' => 'room_id',
+                    'value' => $intRoomId
+                ];
+                $client->setUserExtendInfo();
+            } catch(Exception $e) {
+                Yii::error(serialize($e));
+            }
         }
+
+
         return RoomUser::getDB()->createCommand()->batchInsert($strTableName, 
         ['room_id', 'user_id', 'user_role','enter_time', 'status', 'exit_status'], 
         $arrParam )
@@ -242,6 +255,36 @@ class  RoomService extends BaseService
             'user_id' => $arrRoomUserInfo['user_id']
         ])->asArray()->all();
     }
+
+    /**
+     * 获取房间信息和用户信息
+     * @param $intRoomId
+     * @return array
+     * @throws Exception
+     */
+    public static function getRoomInfoAndUserInfos ($intRoomId){
+        if(empty($intRoomId)){
+            throw new Exception('参数错误');
+        }
+        $arrRoomInfo = RoomInfo::find()->where([
+            'room_id' => $intRoomId,
+        ])->asArray()->one();
+
+        $arrUserInfos = RoomUser::find()->where([
+            'room_id' => $intRoomId,
+        ])->orderBy([
+            'user_role' => SORT_DESC
+        ])->asArray()->all();
+        return [
+            'room_info' => $arrRoomInfo,
+            'user_list' => $arrUserInfos,
+        ];
+    }
+
+    public static function isUserInRoomAvailable ($intUserId){
+
+    }
+
     
 
 }
