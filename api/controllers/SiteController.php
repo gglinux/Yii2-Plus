@@ -83,59 +83,13 @@ class SiteController extends ApiController
     public function actionIndex()
     {
 
-        $key = "example_key";
-        $token = array(
-            "iss" => "http://example.org",
-            "aud" => "http://example.com",
-            "iat" => 1356999524,
-            "nbf" => 1357000000
-        );
-
-        /**
-         * IMPORTANT:
-         * You must specify supported algorithms for your application. See
-         * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
-         * for a list of spec-compliant algorithms.
-         */
-        $jwt = JWT::encode($token, $key);
-//        var_dump($jwt);
-        try{
-            $decoded = JWT::decode($jwt, 'example', array('HS256'));
-        } catch (SignatureInvalidException $exception) {
-            echo "gggggg";exit();
-        }
-//        $decoded = JWT::decode($jwt, 'example', array('HS256'));
-
-//        print_r($decoded);
-
-        /*
-         NOTE: This will now be an object instead of an associative array. To get
-         an associative array, you will need to cast it as such:
-        */
-
-        $decoded_array = (array) $decoded;
-
-        var_dump($decoded_array);
-
-
-        /**
-         * You can add a leeway to account for when there is a clock skew times between
-         * the signing and verifying servers. It is recommended that this leeway should
-         * not be bigger than a few minutes.
-         *
-         * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-         */
-        JWT::$leeway = 60; // $leeway in seconds
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-
-        var_dump($decoded);exit();
 
         //通过RPC，调用service代码
-        $client = Client::create('http://service.dev.dabaozha.com/test', false);
+        $client = Client::create(Yii::$app->params['user_rpc'], false);
         //调用hello函数
-        $user = $client->hello('Word');
+        $user = $client->loginThrid('Word',123,222);
         //输出：string(11) "Hello Word!"
-        var_dump($user);
+        var_dump($user);exit();
 
         echo "<br>";
         echo "<br>";

@@ -11,7 +11,12 @@ return [
     //API接口请求 有效期 10min
     'nonceTime'     => 60*10,
     'jwtKey'        => 'happy.mingwei.jinya.huangqi.jiawei.jide.jingjing',
-
+    //RPC 接口
     'test_rpc' =>'http://service.dev.dabaozha.com/test',
     'user_rpc' =>'http://service.dev.dabaozha.com/user',
+
+    //签名secret
+    'secretKey' =>[
+        'lianpa' => 'U5hM&qrtF5NSRY#K'
+    ]
 ];

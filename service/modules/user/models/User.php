@@ -23,7 +23,7 @@ class User extends ServiceModel
      * @param array $other 其他参数
      * @return array|null|\yii\db\ActiveRecord
      */
-    public function register($uid, $identifier,$certificate, $identity_type, $other = [])
+    public function register($uid, $identifier,$certificate = '', $identity_type = 5, $other = [])
     {
         $userAuth = new UserAuth();
         $time_now = time();
@@ -60,7 +60,7 @@ class User extends ServiceModel
         $userBase->create_time = $time_now;
         $userBase->update_time = $time_now;
         foreach ($table_keys as $value) {
-            if ($other[$value]) {
+            if (isset($other[$value])) {
                 $userBase->$value = $other[$value];
             }
         }
@@ -72,9 +72,14 @@ class User extends ServiceModel
         $regisertLog = new UserRegisterLog();
         $regisertLog->uid = $uid;
         $regisertLog->register_time = time();
-        $regisertLog->register_method =
-        $regisertLog->register_ip = $other['client_ip'];
-        $regisertLog->register_client = $other['client_flag'];
+        $regisertLog->register_method = $register_way;
+        if (isset($other['c_ip'])) {
+            $regisertLog->register_ip = $other['c_ip'];
+        }
+        if (isset($other['c_business'])) {
+            $regisertLog->register_client = $other['c_business'];
+
+        }
         $regisertLog->register_method = $register_way;
         return $regisertLog->save();
     }
@@ -87,7 +92,7 @@ class User extends ServiceModel
         $userExtra->update_time = time();
         $table_keys = array_keys($userExtra->attributeLabels());
         foreach ($table_keys as $value) {
-            if ($other[$value]) {
+            if (isset($other[$value])) {
                 $userExtra->$value = $other[$value];
             }
         }
@@ -124,7 +129,7 @@ class User extends ServiceModel
 
     public function updateUserAccout($uid)
     {
-        $account = 'lp_'.substr( md5($uid ),0,10);
+        $account = 'lp_'.md5($uid);
         return UserBase::updateAll(['user_name' => $account], "uid = $uid");
     }
 
