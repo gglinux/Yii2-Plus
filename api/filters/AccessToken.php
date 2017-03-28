@@ -37,7 +37,7 @@ class AccessToken extends ActionFilter
         try {
             $userinfo = Jwt::getJwtInfo($token);
         } catch (SignatureInvalidException $exception) {
-            Yii::$app->response->error(Error::COMMON_SIGN,'签名错误');
+            Yii::$app->response->error(Error::COMMON_SIGN,'token解析错误');
         }
         if ( empty($userinfo) ||empty($userinfo['uid']) ) {
             Yii::endProfile('FILTER-SESSION-'.YII_REQUEST_START_TIME);

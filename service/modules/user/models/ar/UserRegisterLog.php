@@ -10,7 +10,6 @@ use Yii;
  * @property integer $id
  * @property string $uid
  * @property integer $register_method
- * @property string $register_minute
  * @property integer $register_time
  * @property string $register_ip
  * @property string $register_client
@@ -39,9 +38,9 @@ class UserRegisterLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'register_method', 'register_minute', 'register_time', 'register_ip'], 'required'],
+            [['uid', 'register_method', 'register_time', 'register_ip'], 'required'],
             [['uid', 'register_method', 'register_time'], 'integer'],
-            [['register_minute', 'register_ip', 'register_client'], 'string', 'max' => 16],
+            [['register_ip', 'register_client'], 'string', 'max' => 16],
         ];
     }
 
@@ -54,7 +53,6 @@ class UserRegisterLog extends \yii\db\ActiveRecord
             'id' => '自增ID',
             'uid' => '用户ID',
             'register_method' => '注册方式1手机号 2邮箱 3用户名 4qq 5微信 6腾讯微博 7新浪微博',
-            'register_minute' => '注册分钟',
             'register_time' => '注册时间',
             'register_ip' => '注册IP',
             'register_client' => '注册客户端',

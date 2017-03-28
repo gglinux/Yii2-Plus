@@ -38,13 +38,14 @@ class UserService extends BaseService
             $this->error('已经存在该注册方式下的唯一标识符');
         }
         $uid = $userModel->genUserUniqueId();
-        if ($uid) {
+        if (!$uid) {
             throw new ServiceException('uid生成失败！');
         }
         $userModel->register($uid, $uuid, $toekn, $way, $otherParams);
         $userinfo = $userModel->getUserInfoByUid($uid);
         //第三方登陆，生成账号
         $userModel->updateUserAccout($uid);
+        return $userinfo;
         //
         if ( $userinfo ) {
             return $userinfo;
@@ -102,7 +103,7 @@ class UserService extends BaseService
      * 登陆成功：返回用户信息
      * 登陆失败：返回空
      */
-    public function loginThrid($uuid, $token, $way,  $otherParams = array())
+    public function loginThrid($uuid, $way, $token = '', $otherParams = array())
     {
         $userModel = new User();
         $userAuthInfo = $userModel->getAuthInfo($uuid, $way);

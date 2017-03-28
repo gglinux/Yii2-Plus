@@ -45,7 +45,7 @@ class AppClient extends Client
         $this->mmodel       = isset($_REQUEST['c_mmodel'])? $_REQUEST['c_mmodel']:null;
         $this->cidentity    = isset($_REQUEST['c_identity'])? $_REQUEST['c_identity']:null;
         $this->network      = isset($_REQUEST['c_network'])? $_REQUEST['c_network']:null;
-        $this->business     = isset($_REQUEST['c_business'])? $_REQUEST['c_business']:1;
+        $this->business     = isset($_REQUEST['c_business'])? $_REQUEST['c_business']:'lianpa';
     }
 
     public function getPlatAndVersion()
@@ -104,11 +104,16 @@ class AppClient extends Client
         return $this->network;
     }
 
-    public function getSecretKey()
+    public function getSecretKey($client = '')
     {
-        $version = $this->getPlatAndVersion();
-        $appClientConfig = $this->getConfig();
-        return isset($appClientConfig['secretKey'])?$appClientConfig['secretKey']:null;
+        if ( empty($client) ) {
+            $client = $this->business;
+        }
+        $appSecret = Yii::$app->params['secretKey'][$client];
+        if ( empty($appSecret) ) {
+            throw new Exception('缺少配置', Error::COMMON_MIS_CONF);
+        }
+        return $appSecret;
     }
 
     public function getConfig()

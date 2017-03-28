@@ -55,12 +55,11 @@ class Response extends \yii\web\Response
         $this->format = self::FORMAT_JSON;
         $res = [];
         if(is_array($data) || is_object($data)){
-            $res['data'] = \yii\helpers\ArrayHelper::toArray($data);
-        } elseif(!empty($data)){
-            $res['data'] = $data;
+            $data = \yii\helpers\ArrayHelper::toArray($data);
         }
 
         $res['errno'] = 0;
+        $res['data']   = $data;
         $res['errmsg'] = 'success';
         $res['timestamp'] = time();
 

@@ -7,12 +7,12 @@
  */
 return [
     'user' => [
-        'class' => 'service\modules\user\Module',
+        'class' => 'api\modules\user\Module',
     ],
     'config' => [
-        'class' => 'service\modules\config\Module',
+        'class' => 'api\modules\config\Module',
     ],
     'match' => [
-        'class' => 'service\modules\match\Module',
+        'class' => 'api\modules\match\Module',
     ]
 ];

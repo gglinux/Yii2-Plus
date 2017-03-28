@@ -24,6 +24,7 @@ use Yii;
  * @property string $srcface
  * @property integer $create_time
  * @property integer $update_time
+ * @property string $push_token
  */
 class UserBase extends \yii\db\ActiveRecord
 {
@@ -52,6 +53,7 @@ class UserBase extends \yii\db\ActiveRecord
             [['signature', 'face', 'face200', 'srcface'], 'string', 'max' => 255],
             [['mobile'], 'string', 'max' => 16],
             [['email'], 'string', 'max' => 100],
+            [['push_token'], 'string', 'max' => 50],
         ];
     }
 

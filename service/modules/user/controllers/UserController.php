@@ -40,8 +40,11 @@ class UserController extends ServiceController
 
     public function actionIndex()
     {
+
+
         $service = new UserService();
         $server = new Server();
+//        $server->addInstanceMethods($service);
         $server->add('registerThrid', $service);
         $server->add('registerTrad', $service);
         $server->add('loginTrad', $service);
