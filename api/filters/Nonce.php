@@ -2,10 +2,10 @@
 /**
  * 防重放攻击过滤
  */
-namespace app\filters;
+namespace api\filters;
 
-use app\config\Error;
-use app\helpers\client\AppClient;
+use common\base\Error;
+use common\helpers\client\AppClient;
 use yii\base\ActionFilter;
 use Yii;
 
@@ -13,7 +13,8 @@ class Nonce extends ActionFilter
 {
     public function beforeAction($action)
     {
-        return $this->filterNonce();
+        $this->filterNonce();
+        return parent::beforeAction($action);
     }
 
     public function filterNonce()

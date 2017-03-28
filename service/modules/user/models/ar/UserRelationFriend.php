@@ -55,11 +55,21 @@ class UserRelationFriend extends \yii\db\ActiveRecord
             'id' => '自增ID',
             'uid' => '用户ID',
             'friend_uid' => '用户朋友ID',
-            'status' => '好友状态',
+            'status' => '好友状态 1发起中,2已同意,3已删除',
             'start_time' => '发起好友时间',
-            'start_way' => '发起好友方式',
+            'start_way' => '发起好友方式 1默认主动添加',
             'time_become' => '成为好友时间',
             'notes' => '备注',
         ];
+    }
+
+    public function insertOne($uid, $touid, $startway = 1)
+    {
+        $this->uid = $uid;
+        $this->friend_uid = $touid;
+        $this->status = 1;
+        $this->start_way = $startway;
+        $this->start_time = time();
+        return $this->insert();
     }
 }

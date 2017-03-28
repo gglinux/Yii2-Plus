@@ -78,6 +78,7 @@ class UserBase extends \yii\db\ActiveRecord
             'srcface' => '原图头像',
             'create_time' => '创建时间',
             'update_time' => '修改时间',
+            'push_token'  =>'推送token'
         ];
     }
 

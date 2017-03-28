@@ -37,8 +37,8 @@ class UserRelationBlack extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'friend_uid', 'start_time', 'status'], 'required'],
-            [['uid', 'friend_uid', 'start_time', 'status'], 'integer'],
+            [['uid', 'touid', 'start_time', 'status'], 'required'],
+            [['uid', 'touid', 'start_time', 'status'], 'integer'],
         ];
     }
 
@@ -50,7 +50,7 @@ class UserRelationBlack extends \yii\db\ActiveRecord
         return [
             'id' => '自增ID',
             'uid' => '用户ID',
-            'friend_uid' => '拉黑用户ID',
+            'touid' => '拉黑用户ID',
             'start_time' => '拉黑时间',
             'status' => '状态 0未解除，1解除',
         ];

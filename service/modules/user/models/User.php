@@ -47,10 +47,10 @@ class User extends ServiceModel
      */
     public function getUserInfoByUid($uid)
     {
-        return UserBase::find()->innerJoinWith('hjsk_user_extra')->where(['uid' => $uid])->asArray()->one();
+        return UserBase::find()->where(['uid' => $uid])->asArray()->one();
     }
 
-    private function _updateUserBase($uid, $other)
+    public function _updateUserBase($uid, $other)
     {
         $userBase = new UserBase();
         $time_now = time();
@@ -66,7 +66,7 @@ class User extends ServiceModel
         return $userBase->save();
     }
 
-    private function _updateResterLog($uid, $register_way, $other)
+    public function _updateResterLog($uid, $register_way, $other)
     {
         $regisertLog = new UserRegisterLog();
         $regisertLog->uid = $uid;

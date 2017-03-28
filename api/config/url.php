@@ -11,7 +11,7 @@ $rules = [
     'test'         =>'site/index',
     /////////////////账号中心//////////////////
 
-    'user/register'     =>  '/user/register/index',
+    'user/login'     =>  '/user/register/index',
     'user/login'        =>  '/user/login/index',
 ];
 

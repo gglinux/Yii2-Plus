@@ -1,8 +1,8 @@
 <?php
 
-$params = require(__DIR__ . '/params.php');
-
 $ENV_CONFIG_PATH = __DIR__.'/'.YII_ENV; //当前环境配置所在目录
+
+$params = require($ENV_CONFIG_PATH . '/params.php');
 
 Yii::setAlias('@api', dirname(dirname(__DIR__)) . '/api');
 Yii::setAlias('@common', dirname(dirname(__DIR__)) . '/common');
@@ -29,6 +29,7 @@ $config = [
         'user' => [
             'identityClass' => 'api\models\User',
             'enableAutoLogin' => true,
+            'loginUrl'  => null
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -42,7 +43,7 @@ $config = [
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => require($ENV_CONFIG_PATH.'/log.php'),
+            'targets' => require($ENV_CONFIG_PATH . '/log.php'),
         ],
         // 'db' => require(__DIR__ . '/hjsk_db.php'),
         'urlManager' => [
@@ -52,18 +53,7 @@ $config = [
         ],
     ], require($ENV_CONFIG_PATH.'/components.php')),
 
-
-    'modules' => [
-        'user' => [
-            'class' => 'service\modules\user\Module',
-        ],
-        'room' => [
-            'class' => 'service\modules\room\Module',
-        ],
-        'match' => [
-            'class' => 'service\modules\match\Module',
-        ]
-    ],
+    'modules' => require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
 if (YII_ENV_DEV) {

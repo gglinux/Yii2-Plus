@@ -26,6 +26,10 @@ class Error
     const COMMON_INVALID_PARAM          = 100015; //参数不合法
     const COMMON_LIMIT_BEYOND           = 100016; //超过业务限制
     const COMMON_NO_SUCH_OBJECT         = 100017; //对象不存在
+    const UPDATE_FAILED                 = 100018; //更新失败
+
+    const ACCESS_TOKEN_ERROR            = 100019;//access_token错误
+
 
     //////////////////////////账号中心异常错误码////////////////////////////////
 
@@ -33,6 +37,12 @@ class Error
     const LOGIN_TYPE_ERROR              = 20001;//非账号，邮箱，手机号码方式注册
     const ACCOUNT_REPEAT                = 20002;//已经存在该注册方式下的唯一账号
     const ACCOUNT_PASSWORD_ERROR        = 20003;//账号或者密码错误
+    const USER_NEED_LOGIN               = 20004;//需要登陆
+
+    ////////////////////////////好友关系/////////////////////////////
+
+    const USER_IN_BLACKLIST             = 30001;//好友被拉黑
+    const USER_ADD_ERROR                = 30002;//添加好友错误
 
 
 

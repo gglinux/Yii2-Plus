@@ -11,6 +11,7 @@ namespace service\modules\user\services;
 use service\base\ServiceException;
 use service\base\BaseService;
 use service\modules\user\models\ar\UserAuth;
+use service\modules\user\models\ar\UserBase;
 use service\modules\user\models\User;
 use common\helpers\CommFunction;
 
@@ -18,10 +19,10 @@ class UserService extends BaseService
 {
 
     /**
-     * @param $uuid
-     * @param $way
-     * @param string $toekn
-     * @param array $otherParams
+     * @param $uuid 第三方唯一标示
+     * @param $way 登陆方式
+     * @param string $toekn 第三方token
+     * @param array $otherParams 其他参数
      * @return array|null|\yii\db\ActiveRecord
      * @throws ServiceException
      * 注册成功：返回用户信息
@@ -108,7 +109,7 @@ class UserService extends BaseService
         if ($userAuthInfo['uid']) {
             return $userModel->getUserInfoByUid($userAuthInfo['uid']);
         }
-        return $this->registerThrid($uuid, $token, $way, $otherParams);
+        return $this->registerThrid($uuid, $way, $token, $otherParams);
     }
 
     /**
@@ -142,5 +143,20 @@ class UserService extends BaseService
         } else {
             $this->error("账号或者密码错误！",20003);
         }
+    }
+
+    /**
+     * 更新用户基础信息
+     * @param $uid
+     * @param $other
+     * @throws ServiceException
+     */
+    public function updateUserBase($uid, $other)
+    {
+        if (empty($uid) || empty($other)) {
+            throw new ServiceException('用户信息为空',2000);
+        }
+        $user = new User();
+        return $user->_updateUserBase($uid, $other);
     }
 }
