@@ -4,26 +4,17 @@ namespace service\modules\match\models\ar;
 
 use Yii;
 
-use yii\base\Model;
 
 use service\modules\room\models\ar\PreRoom;
 use common\base\Exception;
-use common\base\BaseService;
 
 /**
  * Class Match
  * 匹配策略
  * @package service\models
  */
-class Match extends \yii\db\ActiveRecord
+class Match extends \yii\base\Model
 {
-    /**
-     * @return string 返回该AR类关联的数据表名
-     */
-    public static function tableName()
-    {
-        //return 'room_info';
-    }
 
     public static function getDb()
     {
@@ -176,7 +167,7 @@ class Match extends \yii\db\ActiveRecord
         $_userList = [];
         foreach($arrPreRoomInfo['user_list'] as $item) {
             if(!isset($item['is_master'])) {
-                $item['is_master'] = 0;
+                $item['is_master'] = 1;
             }
             $_userList[$item['user_id']] = $item;
             $_tmpList[$item['user_id']] =$item['is_master'];

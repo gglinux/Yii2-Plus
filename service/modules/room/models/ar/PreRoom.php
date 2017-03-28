@@ -3,22 +3,17 @@
 namespace service\modules\room\models\ar;
 
 use Yii;
+use service\modules\common\services\CommonService;
+use service\modules\common\models\ar\IdAlloc;
 
-use service\modules\room\models\ar\IdAlloc;
 /**
  * Class PreRoom
  * 预备房间
  * @package service\models
  */
-class PreRoom extends \yii\db\ActiveRecord
+class PreRoom extends \yii\base\Model
 {
-    /**
-     * @return string 返回该AR类关联的数据表名
-     */
-    public static function tableName()
-    {
-        //return 'room_info';
-    }
+
 
     public static function getDb()
     {
@@ -37,7 +32,8 @@ class PreRoom extends \yii\db\ActiveRecord
         $redis = self::getDb();
         $intPreRoomId = $arrPreRoomInfo['pre_room_id'];
         if (empty($intPreRoomId)) {
-            $intPreRoomId = IdAlloc::allocId(IdAlloc::PRE_ROOM_ID_ALLOC_KEY);
+            $client = CommonService::serviceClient("/common/id-alloc", 'php');
+            $intPreRoomId = $client->allocId(IdAlloc::PRE_ROOM_ID_ALLOC_KEY);
             $arrPreRoomInfo['pre_room_id'] = $intPreRoomId;
         }
         Yii::warning('intPreRoomId: ' . $intPreRoomId);

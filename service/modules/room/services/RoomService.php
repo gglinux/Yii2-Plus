@@ -4,12 +4,13 @@ namespace service\modules\room\services;
 
 use Yii;
 
-use yii\base\Model;
 use service\modules\room\models\ar\RoomInfo;
 use service\modules\room\models\ar\RoomUser;
-use service\modules\room\models\ar\IdAlloc;
 use common\base\Exception;
 use service\base\BaseService;
+use service\modules\common\services\CommonService;
+use service\modules\common\models\ar\IdAlloc;
+
 
 
 /**
@@ -40,7 +41,8 @@ class  RoomService extends BaseService
             throw new Exception('参数错误');
         }
         $roomInfo = new RoomInfo();
-        $intRoomId =  IdAlloc::allocId(IdAlloc::ROOM_ID_ALLOC_KEY);
+        $client = CommonService::serviceClient("/common/id-alloc", 'php');
+        $intRoomId =  $client->allocId(IdAlloc::ROOM_ID_ALLOC_KEY);
         if(false == $intRoomId) {
             return false;
         }
@@ -178,6 +180,7 @@ class  RoomService extends BaseService
      */
     public static function getBatchRoomInfo($arrRoomIds)
     {
+
         
         if(!is_array($arrRoomIds)){
             throw new Exception('参数错误');
@@ -188,7 +191,9 @@ class  RoomService extends BaseService
         }
         return RoomInfo::find()->where([
             'room_id' => $arrRoomIds,
-        ])->all();
+        ])->asArray()->all();
+
+
     }
 
     /**
@@ -212,7 +217,7 @@ class  RoomService extends BaseService
             'room_id' => $arrRoomIds,
         ])->orderBy([
             'user_role' => SORT_DESC
-        ])->all();
+        ])->asArray()->all();
     }
 
     /**
@@ -235,7 +240,7 @@ class  RoomService extends BaseService
         return RoomUser::find()->where([
             'room_id' => $arrRoomUserInfo['room_id'],
             'user_id' => $arrRoomUserInfo['user_id']
-        ])->all();
+        ])->asArray()->all();
     }
     
 
