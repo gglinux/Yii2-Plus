@@ -23,17 +23,6 @@ Yii::$app->response->format=Response::FORMAT_JSON;
 class MatchController extends ServiceController
 {
 
-    public $enableCsrfValidation = false;
-
-    public static $defaultIntValue = 1;
-
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-
-    }
 
     /**
      *
@@ -49,12 +38,20 @@ class MatchController extends ServiceController
         ], $service);
         return $server->start();
     }
+
+    /**
+     * test
+     * @return mixed
+     */
     public function actionTest()
     {
         return MatchService::sayHi();
     }
 
-
+    /**
+     * test
+     * @return mixed
+     */
     public function actionSendMessage(){
 
         $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
@@ -72,43 +69,12 @@ class MatchController extends ServiceController
 
     }
 
-
     /**
-     * @brif 队列增加人数
-     * @return string
+     * test
+     * @return mixed
      */
-    public function actionAddUserToQueue($sex)
-    {
-       $ret = MatchService::pushUserToQueue([
-           'user_id' => IdAlloc::allocId(IdAlloc::USER_ID_ALLOC_KEY),
-           'sex' => $sex
-       ]);
-       return $ret;
-
-    }
-
-    /**
-     * @brif 队列增加人数
-     * @return string
-     */
-    public function actionGetUserPreRoomInfo(array $user_ids)
-    {
-       $ret = PreRoom::getBatchUserPreRoomId($user_ids);
-    
-       $ret = PreRoom::getBatchPreRoomInfo($ret);
-        
-       return $ret;
-
-    }
-
-    /**
-     * @brif 创建房间
-     * @return string
-     */
-
-    public function actionMatchRoom()
-    {
+    public function actionMatching(){
         MatchService::matchRoom();
+        return true;
     }
-
 }

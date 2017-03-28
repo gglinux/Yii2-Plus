@@ -8,6 +8,7 @@ use Yii;
 use service\modules\room\models\ar\PreRoom;
 use service\modules\match\models\ar\Match as ModelMatch;
 use service\modules\room\services\RoomService;
+use service\modules\common\services\CommonService;
 use common\base\Exception;
 use service\base\BaseService;
 
@@ -58,18 +59,22 @@ class MatchService extends BaseService
         //TODO 需要获取用户信息
         $liteUserInfo = [];
         if ($intPreRoomId) {
-            $arrPreRoomInfo = PreRoom::getBatchUserPreRoomId([$intUserId]);
-            foreach($arrPreRoomInfo['user_list'] as $item) {
-                if($item['user_id'] == $intUserId){
-                    $liteUserInfo = $item;
-                    break;
+            $arrPreRoomInfo = PreRoom::getPreRoomInfo($intPreRoomId);
+            Yii::warning(serialize($arrPreRoomInfo));
+            if($arrPreRoomInfo['user_list']) {
+                foreach($arrPreRoomInfo['user_list'] as $item) {
+                    if($item['user_id'] == $intUserId){
+                        $liteUserInfo = $item;
+                        break;
+                    }
                 }
             }
-            PreRoom::rmBatchUserPreRoomId([$intUserId], $intPreRoomId);
 
+            PreRoom::rmBatchUserPreRoomId([$intUserId], $intPreRoomId);
             ModelMatch::rmUserFromPreRoom($intUserId, $intPreRoomId);
 
         } else {
+
             ModelMatch::rmBatchUserFromQueue([
                 [
                     'user_id' => $intUserId,
@@ -243,7 +248,7 @@ class MatchService extends BaseService
                     ];
                 }
                 //向客户端发送匹配到用户的消息
-                $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
+                $client = CommonService::serviceClient("/", 'node');
                 $ret = $client->commitMsgToClients($arrMsgList);
                 if(false == $ret) {
                     $strLog = __CLASS__ . "::". __FUNCTION__ . " Hprose call commitMsgToClients error. ". serialize(compact('arrMsgList', 'ret'));
@@ -284,7 +289,7 @@ class MatchService extends BaseService
                     ];
                 }
                 //向客户端发送匹配成功,进入房间的信息
-                $client = new \Hprose\Http\Client(Yii::$app->params['HproseNodeServiceHost'], false);
+                $client = CommonService::serviceClient("/", 'node');
                 $ret = $client->commitMsgToClients($arrMsgList);
                 if(false == $ret) {
                     $strLog = __CLASS__ . "::". __FUNCTION__ . " Hprose call commitMsgToClients error. ". serialize(compact('arrMsgList', 'ret'));

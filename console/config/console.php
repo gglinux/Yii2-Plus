@@ -1,6 +1,6 @@
 <?php
 
-$params = require(__DIR__ . '/params.php');
+$params = require(__DIR__ . '/../../service/config/params.php');
 
 $ENV_CONFIG_PATH = __DIR__.'/'.YII_ENV; //当前环境配置所在目录
 

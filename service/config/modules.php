@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'common' => [
+        'class' => 'service\modules\common\Module',
+    ],
     'user' => [
         'class' => 'service\modules\user\Module',
     ],
