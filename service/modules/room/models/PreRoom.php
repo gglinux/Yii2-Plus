@@ -4,7 +4,7 @@ namespace service\modules\room\models\ar;
 
 use Yii;
 use service\modules\common\services\CommonService;
-use service\modules\common\models\ar\IdAlloc;
+use service\modules\common\models\IdAlloc;
 
 /**
  * Class PreRoom

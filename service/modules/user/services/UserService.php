@@ -160,4 +160,24 @@ class UserService extends BaseService
         $user = new User();
         return $user->_updateUserBase($uid, $other);
     }
+
+
+    /**
+     * 设置用户扩展属性
+     * @param $arrUserExntendInfo
+     * @return mixed
+     */
+    public function setUserExtendInfo ($arrUserExtendInfo){
+        return User::setUserExtendInfo($arrUserExtendInfo);
+    }
+
+
+    /**
+     * 获取用户扩展属性
+     * @param $arrUserExtendFieldInfo
+     * @return mixed
+     */
+    public function getUserExtendInfo ($arrUserExtendFieldInfo) {
+        return User::getUserExtendInfo($arrUserExtendFieldInfo);
+    }
 }

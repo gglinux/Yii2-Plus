@@ -1,6 +1,6 @@
 <?php
 
-namespace service\modules\common\models\ar;
+namespace service\modules\common\models;
 
 
 

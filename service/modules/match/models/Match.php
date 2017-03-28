@@ -1,6 +1,6 @@
 <?php
 
-namespace service\modules\match\models\ar;
+namespace service\modules\match\models;
 
 use Yii;
 
@@ -27,73 +27,109 @@ class Match extends \yii\base\Model
     const SEX_MAN = 1;
     const SEX_WOMAN = 2;
 
-
-
     /**
      * 将用户送入匹配队列
      * @param array  arrUserInfo
-     * @return string 
+     * @return string
      */
     public static function pushUserToQueue($arrUserInfo) {
         $redis = self::getDb();
         $intSex = $arrUserInfo['sex'];
         $intUid = $arrUserInfo['user_id'];
         $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_MAN;
-        if ($intSex == 2) {
+        if ($intSex == self::SEX_WOMAN) {
             $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_WOMAN;
         }
 
-        $score = time();
-
-        $ret = $redis->zadd($strRedisKey, $score , $intUid);
+        $ret = $redis->LPUSH($strRedisKey,  $intUid);
         return $ret;
     }
 
     /**
      * 将用户取出匹配队列
      * @param array  arrUserInfo
-     * @return string 
+     * @return string
      */
-    public static function getUserFromQueue($key, $intCount = 0) {
+    public static function popUserFromQueue($intSex) {
         $redis = self::getDb();
-        $ret = $redis->ZREVRANGE($key, 0 , $intCount);
+
+        $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_MAN;
+        if ($intSex == self::SEX_WOMAN) {
+            $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_WOMAN;
+        }
+        $ret = $redis->RPOP($strRedisKey);
+        var_dump($ret);
+
         return $ret;
     }
 
-     /**
-     * 将用户从队列中删除
-     * @param array 
-     * @return string 
-     */
-    public static function rmBatchUserFromQueue($arrUserInfos) {
-        $redis = self::getDb();
-        $arrManList = [
-            self::REDIS_KEY_MATCH_QUEUE_MAN
-        ];
-        $arrWomanList = [
-            self::REDIS_KEY_MATCH_QUEUE_WOMAN
-        ];
-        foreach($arrUserInfos as $item) {
-            $intSex = $item['sex'];
-            $intUid = $item['user_id'];
-            if ($intSex == 1) {
-                $arrManList[] = $intUid;
-            } else {
-                $arrWomanList[] = $intUid;
-            }
-        }
-        
-        if(count($arrManList) > 1) {
-            $ret = $redis->executeCommand('zrem', $arrManList);
-        }
 
-        if (count($arrWomanList) > 1) {
-            $ret = $redis->executeCommand('zrem',$arrWomanList);
-        }
 
-      
-        return $ret;
-    }
+//    /**
+//     * 将用户送入匹配队列
+//     * @param array  arrUserInfo
+//     * @return string
+//     */
+//    public static function pushUserToQueue($arrUserInfo) {
+//        $redis = self::getDb();
+//        $intSex = $arrUserInfo['sex'];
+//        $intUid = $arrUserInfo['user_id'];
+//        $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_MAN;
+//        if ($intSex == 2) {
+//            $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_WOMAN;
+//        }
+//
+//        $score = time();
+//
+//        $ret = $redis->zadd($strRedisKey, $score , $intUid);
+//        return $ret;
+//    }
+//
+//    /**
+//     * 将用户取出匹配队列
+//     * @param array  arrUserInfo
+//     * @return string
+//     */
+//    public static function getUserFromQueue($key, $intCount = 0) {
+//        $redis = self::getDb();
+//        $ret = $redis->ZREVRANGE($key, 0 , $intCount);
+//        return $ret;
+//    }
+//
+//     /**
+//     * 将用户从队列中删除
+//     * @param array
+//     * @return string
+//     */
+//    public static function rmBatchUserFromQueue($arrUserInfos) {
+//        $redis = self::getDb();
+//        $arrManList = [
+//            self::REDIS_KEY_MATCH_QUEUE_MAN
+//        ];
+//        $arrWomanList = [
+//            self::REDIS_KEY_MATCH_QUEUE_WOMAN
+//        ];
+//        foreach($arrUserInfos as $item) {
+//            $intSex = $item['sex'];
+//            $intUid = $item['user_id'];
+//            if ($intSex == 1) {
+//                $arrManList[] = $intUid;
+//            } else {
+//                $arrWomanList[] = $intUid;
+//            }
+//        }
+//
+//        if(count($arrManList) > 1) {
+//            $ret = $redis->executeCommand('zrem', $arrManList);
+//        }
+//
+//        if (count($arrWomanList) > 1) {
+//            $ret = $redis->executeCommand('zrem',$arrWomanList);
+//        }
+//
+//
+//        return $ret;
+//    }
 
     /**
      * 获取队列长度
@@ -111,7 +147,7 @@ class Match extends \yii\base\Model
      * @param array 参数
      * @return number 返回数量
      */
-    public static function getPreRoomQueueLength($key) {
+    public static function getQueueLength($key) {
         $redis = self::getDb();
         $ret = $redis->llen($key);
         return  $ret;
@@ -255,11 +291,23 @@ class Match extends \yii\base\Model
      */
     public static function getPreRoomIdFromQueue() {
         $redis = self::getDb();
-        $strRedisKey = self::REDIS_KEY_MATCH_QUEUE_PRE_ROOM;
         $ret = $redis->RPOPLPUSH(self::REDIS_KEY_MATCH_QUEUE_PRE_ROOM, self::REDIS_KEY_MATCH_QUEUE_PRE_ROOM);
 
         return  $ret;
     }
+
+    /**
+     * POP获取队列房间信息
+     * @return string
+     */
+    public static function popPreRoomIdFromQueue() {
+        $redis = self::getDb();
+        $ret = $redis->RPOP(self::REDIS_KEY_MATCH_QUEUE_PRE_ROOM);
+
+        return  $ret;
+    }
+
+
 
     /**
      * 删除列房间信息

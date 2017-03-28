@@ -13,7 +13,7 @@ use service\base\BaseService;
 class  CommonService extends BaseService
 {
 
-    public static function serviceClient($serviceName='', $serviceType = 'php', $host = ''){
+    public static function serviceClient($serviceName='', $serviceType = 'php', $host = '', $sync = false){
 
         if(strcasecmp($serviceType,'php') == 0) {
             $host = Yii::$app->params['HprosePHPServiceHost'];
@@ -22,7 +22,7 @@ class  CommonService extends BaseService
         } else {
 
         }
-        $client = new \Hprose\Http\Client($host . "/$serviceName", false);
+        $client = new \Hprose\Http\Client($host . "/$serviceName", $sync);
         return $client;
     }
 

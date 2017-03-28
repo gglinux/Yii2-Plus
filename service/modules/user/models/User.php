@@ -2,6 +2,7 @@
 
 namespace service\modules\user\models;
 
+use common\base\Exception;
 use service\modules\room\models\ar\IdAlloc;
 use service\modules\user\models\ar\UserRegisterLog;
 use service\modules\user\models\ar\UserBase;
@@ -13,7 +14,7 @@ class User extends ServiceModel
 {
 
     const salt = 'happy.mingwei.jinya.huangqi.jiawei.jide.jingjing';
-
+    const REDIS_KEY_USER_EXTEND_INFO = 'user_extend_info_';
     /**
      * @param $uid 用户唯一ID
      * @param $identifier 账号或者用户名
@@ -134,6 +135,63 @@ class User extends ServiceModel
 
     public function loginThird($uuid)
     {
+
+    }
+
+    /**
+     * 获取redis实例
+     * @return mixed
+     */
+    public static function getRedis() {
+        return \Yii::$app->redis;
+    }
+
+    /**
+     * 设置用户扩展属性
+     * @param $arrUserExtendInfo
+     * @return mixed
+     * @throws Exception
+     */
+    public static function setUserExtendInfo ($arrUserExtendInfo) {
+        if (empty($arrUserExtendInfo)
+            || !isset($arrUserExtendInfo['user_id'])
+            || !isset($arrUserExtendInfo['field'])
+            || !isset($arrUserExtendInfo['value'])) {
+            throw new Exception("参数错误");
+        }
+
+        $redis = self::getRedis();
+        $strRedisKey = self::REDIS_KEY_USER_EXTEND_INFO . $arrUserExtendInfo['user_id'];
+        $strField =  $arrUserExtendInfo['field'];
+        $strValue = serialize($arrUserExtendInfo['value']);
+        return $redis->hset($strRedisKey, $strField, $strValue);
+    }
+
+    /**
+     * 获取用户扩展属性
+     * @param $arrUserExtendInfo
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getUserExtendInfo ($arrUserExtendFieldInfo) {
+        if (empty($arrUserExtendFieldInfo)
+            || !isset($arrUserExtendFieldInfo['user_id'])
+            || !isset($arrUserExtendFieldInfo['field'])) {
+            throw new Exception("参数错误");
+        }
+
+        $redis = self::getRedis();
+        $strRedisKey = self::REDIS_KEY_USER_EXTEND_INFO . $arrUserExtendFieldInfo['user_id'];
+        $strField =  $arrUserExtendFieldInfo['field'];
+        if($strField == "*") {
+            $arrUserExtendInfo =  $redis->hgetall($strRedisKey, $strField);
+        } else {
+            $arrUserExtendInfo = $redis->hget($strRedisKey, $strField, $strField);
+        }
+
+        var_dump($arrUserExtendInfo);
+        return $arrUserExtendInfo;
+
 
     }
 }
