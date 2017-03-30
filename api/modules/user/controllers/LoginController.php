@@ -6,11 +6,9 @@ use api\filters\Signature;
 use common\components\Jwt;
 use common\helpers\client\AppClient;
 use \Hprose\Http\Client;
-use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
 use Yii;
 use api\base\ApiController;
 use common\base\Error;
-use yii\filters\RateLimiter;
 
 /**
  * Default controller for the `user` module

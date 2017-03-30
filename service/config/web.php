@@ -49,7 +49,7 @@ $config = [
         ],
     ], require($ENV_CONFIG_PATH.'/components.php')),
     'modules' => require(__DIR__ . '/modules.php'),
-    'params' => $params,
+    'params' => require($ENV_CONFIG_PATH . '/params.php'),
 ];
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
