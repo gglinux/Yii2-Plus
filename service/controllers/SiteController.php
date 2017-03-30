@@ -65,7 +65,6 @@ class SiteController extends ServiceController
 
     /**
      *
-     * 看这里！！！！！！
      *
      * 这个是服务层service对外提供的用户接口
      *
@@ -74,7 +73,7 @@ class SiteController extends ServiceController
      * https://github.com/hprose/hprose-yii/wiki/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95
      *
      * 《注意：测试可以直接调用，需要配置》
-     * 访问：http://service.dev.dabaozha.com/test
+     * 访问：http://service.com/user
      * 输出：Fa3{u#s5"hello"s6"getAll"}z
      * @return string
      */
@@ -82,12 +81,7 @@ class SiteController extends ServiceController
     {
         $server = new Server();
         $anObject = new User();
-//        try{
-//            $anObject->TestException();
-//        } catch (ServiceException $exception) {
-//            var_dump($exception->getCode());
-//        }
-//        exit();
+
         $server->addInstanceMethods($anObject);
         return $server->start();
     }

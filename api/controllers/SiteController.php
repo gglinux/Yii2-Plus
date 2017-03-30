@@ -2,8 +2,6 @@
 
 namespace api\controllers;
 
-use service\base\ServiceException;
-use \Exception;
 use Yii;
 use yii\filters\AccessControl;
 use api\base\ApiController;
@@ -14,8 +12,6 @@ use api\models\ContactForm;
 use \Hprose\Http\Client;
 use Hprose\InvokeSettings;
 use Hprose\ResultMode;
-use Firebase\JWT\JWT;
-use Firebase\JWT\SignatureInvalidException;
 
 
 class SiteController extends ApiController
@@ -62,46 +58,19 @@ class SiteController extends ApiController
         ];
     }
 
-
     /**
-     * @desc
-     * APP可访问的接口 demo
+     * Displays homepage.
      *
-     * 已配置路由：请访问 http://api.dev.dabaozha.com/user
-     *
-     * 一般返回Json格式！！！
-     *
-     * 看这里！！！！！！！！！
-     *
-     *
-     * @author guojiawei
-     * @update ${date}
-     * @access public
-     * @param void
-     * @return mixed
+     * @return string
      */
     public function actionIndex()
     {
+        $client = Client::create('http://service.com/user', false);
+        $test = $client->hello('Word');
+        var_dump($test);exit();
 
-
-        //通过RPC，调用service代码
-        $client = Client::create(Yii::$app->params['user_rpc'], false);
-        //调用hello函数
-        $user = $client->loginThrid('Word',123,222);
-        //输出：string(11) "Hello Word!"
-        var_dump($user);exit();
-
-        echo "<br>";
-        echo "<br>";
-
-        //调用getAll方法
-        $userAll = $client->getAll();
-        var_dump($userAll);
-        //$client->TestException();
-        exit();
-        //return $this->render('index');
+//        return $this->render('index');
     }
-
 
     /**
      * Login action.

@@ -10,9 +10,10 @@ return [
     'adminEmail'    => 'admin@example.com',
     //API接口请求 有效期 10min
     'nonceTime'     => 60*10,
-    'jwtKey'        => 'happy.mingwei.jinya.huangqi.jiawei.jide.jingjing',
+    //jwt生成secret
+    'jwtKey'        => '',
     //RPC 接口
-    'test_rpc' =>'http://service.dev.dabaozha.com/test',
+    'test_rpc' =>'http://service.com/test',
     'user_rpc' =>'http://service.dev.dabaozha.com/user',
 
     //签名secret

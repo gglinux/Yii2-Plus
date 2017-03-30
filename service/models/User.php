@@ -17,7 +17,7 @@ class User extends ServiceModel
 {
     /**
      * 测试RPC方法一
-     * 不使用DB
+     * 非DB demo
      * 看这里1！！！！！！！！
      * @param array $data
      * @return int
@@ -28,9 +28,8 @@ class User extends ServiceModel
     }
 
     /**
-     * @desc
-     * 测试 DB demo
-     * 看这里！！！！！！
+     * 测试RPC方法二
+     * DB demo
      * @author guojiawei
      * @update ${date}
      * @access public
@@ -40,10 +39,15 @@ class User extends ServiceModel
     public function getAll()
     {
         //具体数据库操作方法，见Yii指南
-        $posts = Yii::$app->db_user->createCommand('SELECT * FROM hjsk_user_base')->queryAll();
+        $posts = Yii::$app->db_user->createCommand('SELECT * FROM XXX')->queryAll();
         return $posts;
     }
 
+    /**
+     * 测试RPC方法三
+     * 抛异常
+     * @throws ServiceException
+     */
     public function TestException()
     {
         throw new ServiceException('测试异常调用',1000);

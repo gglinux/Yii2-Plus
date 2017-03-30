@@ -6,13 +6,4 @@
  * Time: 下午10:26
  */
 return [
-    'user' => [
-        'class' => 'api\modules\user\Module',
-    ],
-    'config' => [
-        'class' => 'api\modules\config\Module',
-    ],
-    'match' => [
-        'class' => 'api\modules\match\Module',
-    ]
 ];

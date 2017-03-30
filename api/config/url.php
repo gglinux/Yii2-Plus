@@ -8,11 +8,6 @@
 ///////////API对外路由配置/////////////
 
 $rules = [
-    'test'         =>'site/index',
-    /////////////////账号中心//////////////////
-
-    'user/login'     =>  '/user/register/index',
-    'user/login'        =>  '/user/login/index',
 ];
 
 return $rules;

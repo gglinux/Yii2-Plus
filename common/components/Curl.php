@@ -6,7 +6,7 @@ use yii\base\Component;
 use yii\base\Exception;
 
 /**
- * 欢聚时刻 curl组件
+ *  curl组件
  * Curl wrapper for Yii
  * @author hackerone
  */

@@ -47,6 +47,12 @@ $config = [
             'showScriptName' => true,
             'rules' => require('url.php'),
         ],
+        'queue' => [
+            'class' => \zhuravljov\yii\queue\redis\Queue::class,
+            'redis' => 'redis', // connection ID
+            'channel' => 'queue', // queue channel
+        ],
+
     ], require($ENV_CONFIG_PATH.'/components.php')),
     'modules' => require(__DIR__ . '/modules.php'),
     'params' => require($ENV_CONFIG_PATH . '/params.php'),

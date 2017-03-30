@@ -9,9 +9,6 @@
 
 return [
     'adminEmail' => 'admin@example.com',
-    'HproseNodeServiceHost' => 'http://127.0.0.1:8082',
-    'HprosePHPServiceHost' => 'http://service.dev.dabaozha.com',
-
     /**
      * 服务端推送
      * 个推服务配置

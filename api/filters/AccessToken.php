@@ -46,7 +46,7 @@ class AccessToken extends ActionFilter
         SessionCan::init($userinfo);
 
         Yii::info("{$token} check for uid[{$userinfo['uid']}], complete,
-                userInfo from passport:\r\n".VarDumper::dumpAsString($userinfo),
+                userInfo from \r\n".VarDumper::dumpAsString($userinfo),
             'application.service'
         );
         return true;
