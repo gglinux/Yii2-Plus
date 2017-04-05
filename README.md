@@ -15,8 +15,8 @@ service
 APP服务层，提供独立模块给API调用
 1. [Hprose](https://github.com/hprose/hprose-php)服务层RPC框架
 2. 日志监控报警
-3. [推送服务](doc/guide/getui.md)
-4. [队列服务](doc/guide/queue.md)
+3. 个推[推送服务](doc/guide/getui.md)
+4. Yii-queue[队列服务](doc/guide/queue.md)
 
 admin
 ------------
