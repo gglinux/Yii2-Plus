@@ -2,7 +2,7 @@
 ====================
 
 
-提供基于 [个推](http://www.getui.com/cn/index.html) 的队列服务
+提供基于 [个推](http://www.getui.com/cn/index.html) 的推送服务
 
 
 Demo
