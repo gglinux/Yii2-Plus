@@ -1,32 +1,37 @@
-# Yii2-Plus
-Yii2 + Hprose 搭建的脚手架项目。集成API接口，Web前台，管理后台，Service(服务层)。
+Yii2  脚手架
+====================
+Yii2 + Hprose 搭建的脚手架项目。集成API接口，Web前台，管理后台，Service
 
 ## API
-1. 重写Response组件，自定义返回数据结构
-2. 集成[JWT](https://tools.ietf.org/html/rfc7519)( JSON Web Token (JWT))组件 
-3. 添加签名验证过滤器
-4. 添加放刷过滤器
-5. [Hprose](https://github.com/hprose/hprose-php)作为RPC client框架
-6. 通过坏境变量，区分线上，测试，开发坏境
+APP 数据接口层，提供统一RESTful 调用
+1. Response组件，Json结构化
+2. [JWT](https://tools.ietf.org/html/rfc7519)( JSON Web Token (JWT))组件 
+3. 签名验证过滤
+4. 防重放攻击过滤
+5. [Hprose](https://github.com/hprose/hprose-php)数据层RPC框架
 
-## Admin
+service
+------------
+APP服务层，提供独立模块给API调用
+1. [Hprose](https://github.com/hprose/hprose-php)服务层RPC框架
+2. 日志监控报警
+3. 推送服务(doc/guide/getui.md)
+4. 队列服务(doc/guide/queue.md)
+
+admin
+------------
+网站管理后台项目
 1. Element UI框架搭建（暂未实现）
 
-## Service
-1. [Hprose](https://github.com/hprose/hprose-php)作为RPC server框架
-2. 基于日志监控的报警系统
-3. 集成个推（暂未实现）
-4. 集成 yii2-queue（暂未实现）
 
-## WWW
-H5，Web前台项目
+www
+------------
+网站项目（H5）,基于Yii-basic，直接访问www.xxx.com
 
-## 安装
+Installation
+------------
+1. 配置lnmp坏境，导入[nginx配置](doc/nginx_conf)
+2. ``` git clone git@github.com:gglinux/Yii2-Plus.git ```
+3. 根目录，composer update
 
-1. 安装 composer
-2. clone本项目到本地
-3. composer install
-4. 配置nginx虚拟主机，映射api,admin,service,www代码目录
-5. 分别访问对应URL
-6. Enjoy it！
 

@@ -17,9 +17,24 @@ use zhuravljov\yii\queue\Command as BaseCommand;
 class Command extends BaseCommand
 {
     /**
-     * @var Driver
+     * @var Queue
      */
-    public $driver;
+    public $queue;
+
+    /**
+     * @var string
+     */
+    public $defaultAction = 'info';
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'info' => InfoAction::class,
+        ];
+    }
 
     /**
      * Runs all jobs from db-queue.
@@ -27,7 +42,7 @@ class Command extends BaseCommand
      */
     public function actionRun()
     {
-        $this->driver->run();
+        $this->queue->run();
     }
 
     /**
@@ -38,6 +53,6 @@ class Command extends BaseCommand
      */
     public function actionListen($delay = 3)
     {
-        $this->driver->listen($delay);
+        $this->queue->listen($delay);
     }
 }

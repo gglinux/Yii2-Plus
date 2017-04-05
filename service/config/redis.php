@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Redis 定义
+ */
 return [
     'class' => 'yii\redis\Connection',
     'hostname' => 'localhost',

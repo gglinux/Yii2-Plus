@@ -14,10 +14,10 @@ return [
     'jwtKey'        => '',
     //RPC 接口
     'test_rpc' =>'http://service.com/test',
-    'user_rpc' =>'http://service.dev.dabaozha.com/user',
+    'user_rpc' =>'http://service.com/user',
 
     //签名secret
     'secretKey' =>[
-        'lianpa' => 'U5hM&qrtF5NSRY#K'
+        'key'=>'value'
     ]
 ];

@@ -861,16 +861,16 @@
         },
         {
             "name": "zhuravljov/yii2-queue",
-            "version": "0.10.0",
+            "version": "0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zhuravljov/yii2-queue.git",
-                "reference": "630f7ce3a4bf1baec1f9d1d6eff112f8f82a4ce0"
+                "reference": "2843daf90cd48a1f4533cfc8126566ce950ad5ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/zhuravljov/yii2-queue/630f7ce3a4bf1baec1f9d1d6eff112f8f82a4ce0.zip",
-                "reference": "630f7ce3a4bf1baec1f9d1d6eff112f8f82a4ce0",
+                "url": "https://files.phpcomposer.com/files/zhuravljov/yii2-queue/2843daf90cd48a1f4533cfc8126566ce950ad5ba.zip",
+                "reference": "2843daf90cd48a1f4533cfc8126566ce950ad5ba",
                 "shasum": ""
             },
             "require": {
@@ -880,6 +880,7 @@
                 "pda/pheanstalk": "*",
                 "php-amqplib/php-amqplib": "*",
                 "phpunit/phpunit": "~4.4",
+                "symfony/process": "*",
                 "yiisoft/yii2-debug": "*",
                 "yiisoft/yii2-redis": "*"
             },
@@ -913,7 +914,7 @@
                 "redis",
                 "yii"
             ],
-            "time": "2017-03-22T10:09:40+00:00"
+            "time": "2017-04-02T05:12:00+00:00"
         }
     ],
     "packages-dev": [
@@ -1768,16 +1769,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "4.0.7",
+            "version": "4.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "09e2277d14ea467e5a984010f501343ef29ffc69"
+                "reference": "ef7b2f56815df854e66ceaee8ebe9393ae36a40d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/sebastianbergmann/php-code-coverage/09e2277d14ea467e5a984010f501343ef29ffc69.zip",
-                "reference": "09e2277d14ea467e5a984010f501343ef29ffc69",
+                "url": "https://files.phpcomposer.com/files/sebastianbergmann/php-code-coverage/ef7b2f56815df854e66ceaee8ebe9393ae36a40d.zip",
+                "reference": "ef7b2f56815df854e66ceaee8ebe9393ae36a40d",
                 "shasum": ""
             },
             "require": {
@@ -1827,7 +1828,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-03-01T09:12:17+00:00"
+            "time": "2017-04-02T07:44:40+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2017,16 +2018,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.17",
+            "version": "5.7.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "68752b665d3875f9a38a357e3ecb35c79f8673bf"
+                "reference": "69c4f49ff376af2692bad9cebd883d17ebaa98a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/sebastianbergmann/phpunit/68752b665d3875f9a38a357e3ecb35c79f8673bf.zip",
-                "reference": "68752b665d3875f9a38a357e3ecb35c79f8673bf",
+                "url": "https://files.phpcomposer.com/files/sebastianbergmann/phpunit/69c4f49ff376af2692bad9cebd883d17ebaa98a1.zip",
+                "reference": "69c4f49ff376af2692bad9cebd883d17ebaa98a1",
                 "shasum": ""
             },
             "require": {
@@ -2095,7 +2096,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-03-19T16:52:12+00:00"
+            "time": "2017-04-03T02:22:27+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

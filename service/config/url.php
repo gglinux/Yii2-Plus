@@ -9,8 +9,6 @@
 
 $rules = [
     'test'         =>'site/index',
-    /////////////////账号中心//////////////////
-    'user'=>'/user/user/index'
 ];
 
 return $rules;

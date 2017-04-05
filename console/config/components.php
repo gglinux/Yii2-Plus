@@ -9,6 +9,11 @@
 //////////////开发坏境数据库配置////////////////
 
 $db_config = [
+    'queue' => [
+        'class' => \zhuravljov\yii\queue\redis\Queue::className(),
+        'redis' => 'redis', // connection ID
+        'channel' => 'queue', // queue channel
+    ],
 ];
 
 return $db_config;

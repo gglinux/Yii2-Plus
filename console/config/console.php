@@ -15,7 +15,7 @@ $config = [
     'timeZone'=>'Asia/Chongqing',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'controllerNamespace' => 'console\commands',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','queue'],
     'components' => array_merge([
 
         'cache' => [
@@ -31,15 +31,12 @@ $config = [
     //'modules' => require(__DIR__ . '/modules.php'),
     'params' => $params,
 ];
+
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['127.0.0.1', '11.11.11.1', '192.168.11.1', '::1'],
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
     ];
-
 }
-//var_dump($config);exit();
 return $config;

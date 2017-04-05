@@ -1,7 +1,5 @@
 <?php
 
-$params = require(__DIR__ . '/params.php');
-
 $ENV_CONFIG_PATH = __DIR__.'/'.YII_ENV; //当前环境配置所在目录
 
 Yii::setAlias('@service', dirname(dirname(__DIR__)) . '/service');
@@ -42,11 +40,13 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => require($ENV_CONFIG_PATH.'/log.php'),
         ],
+        //路由服务
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => true,
             'rules' => require('url.php'),
         ],
+        //队列服务
         'queue' => [
             'class' => \zhuravljov\yii\queue\redis\Queue::class,
             'redis' => 'redis', // connection ID
@@ -73,5 +73,4 @@ if (YII_ENV_DEV) {
         'allowedIPs' => ['127.0.0.1','::1','11.11.11.1', '192.168.0.*', '192.168.11.1' ],
     ];
 }
-//var_dump($config);exit();
 return $config;
