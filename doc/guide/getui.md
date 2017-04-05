@@ -5,10 +5,6 @@
 提供基于 [个推](http://www.getui.com/cn/index.html) 的队列服务
 
 
-[![最新稳定版](https://poser.pugx.org/zhuravljov/yii2-queue/v/stable.svg)](https://packagist.org/packages/zhuravljov/yii2-queue)
-[![Total Downloads](https://poser.pugx.org/zhuravljov/yii2-queue/downloads.svg)](https://packagist.org/packages/zhuravljov/yii2-queue)
-[![Build Status](https://travis-ci.org/zhuravljov/yii2-queue.svg)](https://travis-ci.org/zhuravljov/yii2-queue)
-
 Demo
 -----------
 1. 入队列
