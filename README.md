@@ -10,11 +10,13 @@ Yii2 + Hprose 搭建的脚手架项目。集成API接口，Web前台，管理后
 6. 通过坏境变量，区分线上，测试，开发坏境
 
 ## Admin
-1. Element UI框架搭建
+1. Element UI框架搭建（暂未实现）
 
 ## Service
 1. [Hprose](https://github.com/hprose/hprose-php)作为RPC server框架
 2. 基于日志监控的报警系统
+3. 集成个推（暂未实现）
+4. 集成 yii2-queue（暂未实现）
 
 ## WWW
 H5，Web前台项目
