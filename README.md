@@ -1,5 +1,7 @@
 Yii2  脚手架
 ====================
+[![Travis](https://img.shields.io/badge/author-gglinux-green.svg)](http://gglinux.com/)
+[![Travis](https://img.shields.io/badge/license-apache2-blue.svg)](https://github.com/gglinux/Yii2-Plus/blob/master/LICENSE)
 Yii2 + Hprose 搭建的脚手架项目。集成API接口，Web前台，管理后台，Service
 
 ## API
