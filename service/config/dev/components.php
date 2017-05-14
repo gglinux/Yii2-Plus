@@ -14,7 +14,7 @@ $db_config = [
     //用户数据库
     'db_user' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host='.DEV_SERVER_IP.';dbname=hjsk_user',
+        'dsn' => 'mysql:host='.DEV_SERVER_IP.';dbname=user',
         'username' => 'user',
         'password' => '123456',
         'charset' => 'utf8mb4',
@@ -22,7 +22,7 @@ $db_config = [
     //其他数据库
     'db_other其他数据库' => [
         'class' => 'yii\db\Connection',
-        'dsn' => 'mysql:host='.DEV_SERVER_IP.';dbname=hjsk_user',
+        'dsn' => 'mysql:host='.DEV_SERVER_IP.';dbname=other',
         'username' => 'other',
         'password' => '123456',
         'charset' => 'utf8mb4',
