@@ -6,7 +6,7 @@
  * Time: 下午3:45
  */
 
-namespace service\modules\common\controllers;
+namespace service\modules\push\controllers;
 
 
 use Hprose\Yii\Server;
@@ -24,7 +24,6 @@ class PushController extends ServiceController
         $service = new PushService();
         $server = new Server();
         $server->add('pushByPushtoken', $service);
-        $server->add("pushByUid", $service);
         return $server->start();
     }
 

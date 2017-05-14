@@ -3,6 +3,7 @@
 namespace service\modules\common;
 
 /**
+ * 公共配置服务
  * common module definition class
  */
 class Module extends \yii\base\Module

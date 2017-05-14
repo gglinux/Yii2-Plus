@@ -6,7 +6,7 @@
  * Time: 下午3:55
  */
 
-namespace service\modules\common\services;
+namespace service\modules\push\services;
 
 
 use common\othersdk\getui\Push;
