@@ -8,7 +8,8 @@
 ///////////RPC对外路由配置/////////////
 
 $rules = [
-    'test'         =>'site/index',
+    //服务化 文档
+//    'index' =>'common/config/index',
 ];
 
 return $rules;

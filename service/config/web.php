@@ -13,6 +13,7 @@ $config = [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'controllerNamespace' => 'service\controllers',
     'bootstrap' => ['log'],
+    'defaultRoute' => '/common/config',
     'components' => array_merge([
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -43,7 +44,7 @@ $config = [
         //路由服务
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => true,
+            'showScriptName' => false,
             'rules' => require('url.php'),
         ],
         //队列服务

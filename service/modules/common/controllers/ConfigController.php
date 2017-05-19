@@ -25,4 +25,9 @@ class ConfigController extends ServiceController
         return [];
     }
 
+    public function actionIndex()
+    {
+        return $this->renderPartial('doc');
+    }
+
 }
