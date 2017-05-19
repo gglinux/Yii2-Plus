@@ -369,9 +369,9 @@
 
 <hr />
 
-<blockquote><p><strong>接口名:</strong> api/v1/admin/update</p>
+<blockquote><p><strong>接口名:</strong> push/pushByPushtoken </p>
 
-    <p><strong>方法:</strong> POST</p></blockquote>
+    <p><strong>方法:</strong> Hprose RPC </p></blockquote>
 
 <h4>参数说明</h4>
 
@@ -388,10 +388,10 @@
     </thead>
     <tbody>
     <tr>
-        <td align="left">apps</td>
+        <td align="left">pushtoken</td>
         <td align="center">是</td>
         <td align="center">string</td>
-        <td>json格式数据提供用户安装的app及版本，格式package:versionCode,如:{"Android.mussyu":200,"Android.lizhi.szbj_new":10}，最多50个</td>
+        <td>用户设备的推送ID</td>
     </tr>
     </tbody>
 </table>
@@ -401,26 +401,10 @@
 
 <hr />
 
-<pre><code>#curl http://host/api/v1/admin/update -d 'apps={"Android.mussyu":200,"Android.lizhi.szbj_new":10}'//请求范例
-{
-"result": 0,//0表示正常，非0表示错误
-"msg": "",//消息
-"content": [
-    {//package=&gt;内容，具体数据结构请参考ssdb文档-package2docid
-        "icon": "http://test.com/../data/tmp/picfile/218433_icon.png",
-        "versionName": "3.0.1",
-        "appName": "LocalToGoogle",
-        "versionCode": "301",
-        "size": "36532",
-        "package": "Android.mussyu",
-        "packageId": "12877",
-        "docId": "14277",
-        "apkUrl": "Android.mussyu_301_1449503918.apk",
-        "signMD5": "3446417341",
-        "changeLog": "优化体验，增强稳定性。"
-    }
-  ]
-}
+<pre><code>
+False: 失败
+True：成功
+Exception：异常
 </code></pre>
 
 <p><br></p>
@@ -428,17 +412,26 @@
 
 <h1>附：错误码说明</h1>
 
-<pre><code>0    成功
-101  参数错误
-102  系统错误
-103  无权访问
-104  达到下载次数上限
-105  达到评论次数上限
-106  未找到下载的应用
-107  参数含有非utf8字符
-108  更新软件数超过限制
-109  反馈字数超限
-110  评论字数超限
+<pre><code>
+    const COMMON_UNKOWN                 = 100000; //未知错误
+    const COMMON_DB                     = 100001; //数据库错误
+    const COMMON_SIGN                   = 100002; //签名错误
+    const COMMON_ILLEGAL_CLIENT         = 100003; //非法客户端类型
+    const COMMON_METHOD                 = 100004; //非法的http请求方法
+    const COMMON_INVALID_PHONE          = 100005; //手机号格式不正确
+    const COMMON_MIS_CONF               = 100006; //缺少配置
+    const COMMON_RPC                    = 100007; //RPC 服务出错
+    const COMMON_INVALID_EMAIL          = 100008; //邮箱格式不正确
+    const COMMON_CACHE_W                = 100009; //cache写失败
+    const COMMON_VERIFY_CODE_ERR        = 100010; //验证码错误
+    const COMMON_UNKOWN_TYPE            = 100011; //未知类型
+    const COMMON_IDCARD_ERR             = 100012; //身份证错误
+    const COMMON_MISS_PARAM             = 100013; //缺少参数
+    const COMMON_NONCE_ERROR            = 100014; //检测到可能的重放攻击
+    const COMMON_INVALID_PARAM          = 100015; //参数不合法
+    const COMMON_LIMIT_BEYOND           = 100016; //超过业务限制
+    const COMMON_NO_SUCH_OBJECT         = 100017; //对象不存在
+    const UPDATE_FAILED                 = 100018; //更新失败
 </code></pre>
 </body>
 </html>

@@ -8,8 +8,10 @@
 ///////////RPC对外路由配置/////////////
 
 $rules = [
-    //服务化 文档
-//    'index' =>'common/config/index',
+    //推送
+    'push' =>'push/push/index',
+    //用户
+    'user' =>'user/user/index',
 ];
 
 return $rules;

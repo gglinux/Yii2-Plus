@@ -6,7 +6,7 @@
  * Time: 下午3:55
  */
 
-namespace service\modules\push\services;
+namespace service\modules\push\service;
 
 
 use common\othersdk\getui\Push;
@@ -186,32 +186,4 @@ class PushService extends BaseService implements Job
         ]));
     }
 
-    /**
-     * 根据uid 推送消息
-     * @param $uid
-     * @param $data
-     */
-    public function pushByUid($uid, $data)
-    {
-        $userinfo = $this->_getUserInfo($uid);
-        if ( !isset($userinfo['pushtoken']) ) {
-            $this->error('用户未开启推送权限');
-        }
-        \Yii::$app->queue->push(new PushService([
-            'pushtoken' => $userinfo['pushtoken'],
-            'client' => $userinfo['client'],
-            'data' => $data
-        ]));
-    }
-
-    /**
-     * 获取用户信息
-     * todo 根据实际情况获取
-     * @param $uid
-     * @return array
-     */
-    private function _getUserInfo($uid)
-    {
-        return [];
-    }
 }

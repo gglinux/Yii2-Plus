@@ -11,7 +11,7 @@ namespace service\modules\push\controllers;
 
 use Hprose\Yii\Server;
 use service\base\ServiceController;
-use service\modules\common\services\PushService;
+use service\modules\push\service\PushService;
 
 class PushController extends ServiceController
 {
