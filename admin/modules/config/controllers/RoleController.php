@@ -4,7 +4,6 @@ namespace admin\modules\config\controllers;
 
 use yii\web\Controller;
 use Yii;
-use common\base\Error;
 use yii\web\NotFoundHttpException;
 
 /**
