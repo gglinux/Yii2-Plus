@@ -12,6 +12,7 @@ namespace service\modules\push\controllers;
 use Hprose\Yii\Server;
 use service\base\ServiceController;
 use service\modules\push\service\PushService;
+use service\components\AccessLogFilter;
 
 class PushController extends ServiceController
 {
@@ -23,7 +24,7 @@ class PushController extends ServiceController
     {
         $service = new PushService();
         $server = new Server();
-        $server->add('pushByPushtoken', $service);
+        $server->add('pushByPushtoken', $service)->addFilter(new AccessLogFilter());
         return $server->start();
     }
 
