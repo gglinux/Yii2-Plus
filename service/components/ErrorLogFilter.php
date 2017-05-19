@@ -27,6 +27,7 @@ $logHandler = function($name, array &$args, stdClass $context, Closure $next)
         return $e;
     }catch(\yii\base\Exception $e) {
         Yii::error(['name'=>'PHP error!','function'=>$name,'intput'=>$args,'exception'=>var_export($e, true)]);
+        //todo 根据发生频率，发送邮件和短信
         return $e;
     }
     return $result;
