@@ -21,7 +21,7 @@ $config = [
             'enableCsrfValidation' => false,
         ],
         'response' => [
-            'class' => 'api\components\Response',
+            'class' => 'common\components\Response',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

@@ -10,6 +10,7 @@ namespace service\modules\common\controllers;
 
 use Yii;
 use service\base\ServiceController;
+use yii\web\NotFoundHttpException;
 
 
 class ConfigController extends ServiceController
@@ -19,9 +20,18 @@ class ConfigController extends ServiceController
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $exception = Yii::$app->errorHandler->exception;
+
+        $data['code'] = $exception->getCode();
+        $data['message'] = $exception->getMessage();
+        $data['name'] = $exception->getTraceAsString();
+
         if ($exception !== null) {
-//            return $exception;
-            var_dump($exception);exit();
+            if ($exception instanceof NotFoundHttpException) {
+                $data['code'] = 404;
+            } else {
+                $data['code'] = 500;
+            }
+            return $data;
         }
         return [];
     }
