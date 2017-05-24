@@ -19,8 +19,8 @@
                     登录
                 </el-button>
             </el-form-item>
-            <div class='tips'>admin账号为:admin@wallstreetcn.com 密码随便填</div>
-            <div class='tips'>editor账号:editor@wallstreetcn.com 密码随便填</div>
+            <div class='tips'>admin账号为:admin@gglinux.com 密码随便填</div>
+            <div class='tips'>editor账号:editor@gglinux.com 密码随便填</div>
             <router-link to="/sendpwd" class="forget-pwd">
                 忘记密码?(或首次登录)
             </router-link>
@@ -58,7 +58,7 @@
         };
         return {
           loginForm: {
-            email: 'admin@wallstreetcn.com',
+            email: 'test@gglinux.com',
             password: ''
           },
           loginRules: {
@@ -88,6 +88,7 @@
                 this.$router.push({ path: '/' });
                 // this.showDialog = true;
               }).catch(err => {
+                console.log(err);
                 this.$message.error(err);
                 this.loading = false;
               });

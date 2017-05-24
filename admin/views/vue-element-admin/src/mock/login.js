@@ -25,12 +25,21 @@ const userMap = {
     avatar: 'https://wdl.wallstreetcn.com/48a3e1e0-ea2c-4a4e-9928-247645e3428b',
     name: '工程师小王',
     uid: '003'
+  },
+  test: {
+    role: ['admin'],
+    token: 'admin',
+    introduction: '我是开发',
+    avatar: 'https://wdl.wallstreetcn.com/48a3e1e0-ea2c-4a4e-9928-247645e3428b',
+    name: '工程师小王',
+    uid: '003'
   }
 }
 
 export default {
   loginByEmail: config => {
     const { email } = JSON.parse(config.body);
+    console.log(config);
     return userMap[email.split('@')[0]];
   },
   getInfo: config => {

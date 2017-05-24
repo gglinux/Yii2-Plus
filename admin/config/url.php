@@ -9,7 +9,7 @@
 
 $rules = [
     //用户
-    'user/login' =>'user/user/login',
+    'admin/login/loginbyemail' =>'user/user/login',
 ];
 
 return $rules;
