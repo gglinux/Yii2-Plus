@@ -19,8 +19,8 @@
                     登录
                 </el-button>
             </el-form-item>
-            <div class='tips'>admin账号为:admin@gglinux.com 密码随便填</div>
-            <div class='tips'>editor账号:editor@gglinux.com 密码随便填</div>
+            <div class='tips'>admin账号为:admin@gglinux.com 密码:111111</div>
+            <div class='tips'>author账号:author@gglinux.com 密码:222222</div>
             <router-link to="/sendpwd" class="forget-pwd">
                 忘记密码?(或首次登录)
             </router-link>
@@ -58,7 +58,7 @@
         };
         return {
           loginForm: {
-            email: 'test@gglinux.com',
+            email: 'admin@gglinux.com',
             password: ''
           },
           loginRules: {

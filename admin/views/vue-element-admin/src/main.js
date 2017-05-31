@@ -20,7 +20,7 @@ import Sticky from 'components/Sticky'; // 粘性header组件
 import vueWaves from './directive/waves';// 水波纹指令
 import errLog from 'store/errLog';// error log组件
 
-import './mock/index.js';  // 该项目所有请求使用mockjs模拟,使用admin提供的API
+// import './mock/index.js';  // 该项目所有请求使用mockjs模拟,使用admin提供的API
 
 // register globally
 Vue.component('multiselect', Multiselect);

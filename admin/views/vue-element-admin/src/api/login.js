@@ -5,8 +5,9 @@ export function loginByEmail(email, password) {
     email,
     password
   };
+  console.log(data);
   return fetch({
-    url: 'admin/login/loginbyemail',
+    url: 'admin/user/loginbyemail',
     method: 'post',
     data
   });
@@ -14,7 +15,7 @@ export function loginByEmail(email, password) {
 
 export function logout() {
   return fetch({
-    url: 'admin/login/logout',
+    url: 'admin/user/logout',
     method: 'post'
   });
 }
