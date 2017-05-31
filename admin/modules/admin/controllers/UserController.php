@@ -35,7 +35,7 @@ class UserController extends AdminController
             'password'=>'111111',
             'introduction' => '管理员',
             'role' => 'admin',
-            'token' => 'admin'
+            'avatar' =>'http://gglinux.com/images/dog.png'
         ],
         [
             'uid'  => 2,
@@ -44,7 +44,7 @@ class UserController extends AdminController
             'password'=>'222222',
             'introduction' => '作者',
             'role' => 'author',
-            'token' => 'author'
+            'avatar' =>'http://gglinux.com/images/dog.png'
         ]
     ];
 

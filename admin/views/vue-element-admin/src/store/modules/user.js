@@ -71,9 +71,8 @@ const user = {
             if (data.errno != 0) {
               reject(data.errmsg);
             }
-            console.log(data);
-            Cookies.set('X-Ivanka-Token', response.data.token);
-            commit('SET_TOKEN', data.token);
+            Cookies.set('X-Ivanka-Token', data.data.token);
+            commit('SET_TOKEN', data.data.token);
             commit('SET_EMAIL', email);
             resolve();
         }).catch(error => {
@@ -87,7 +86,7 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
-          const data = response.data;
+          const data = response.data.data;
           commit('SET_ROLES', data.role);
           commit('SET_NAME', data.name);
           commit('SET_AVATAR', data.avatar);

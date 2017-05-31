@@ -10,6 +10,10 @@
 return [
     'adminEmail' => 'admin@example.com',
     /**
+     * Jwtkey
+     */
+    'jwtKey' => 'fhaskfnas342fs',
+    /**
      * 服务端推送
      * 个推服务配置
      */

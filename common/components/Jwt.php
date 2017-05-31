@@ -61,7 +61,7 @@ class Jwt extends \Firebase\JWT\JWT
             return null;
         }
         self::$info = $decode_array['info'];
-        return $decode_array['info'];
+        return (array)$decode_array['info'];
     }
 
     public static function updateJwt($token)
