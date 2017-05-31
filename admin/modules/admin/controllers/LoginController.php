@@ -11,6 +11,18 @@ use yii\web\Controller;
  */
 class LoginController extends Controller
 {
+
+    public $adminUsers = [
+        [
+            'uid' => '110',
+            'name'=>'张三',
+            'password'=>'111111',
+            'introduction' => '后台管理员',
+            ''
+
+        ]
+
+    ];
     /**
      * Renders the index view for the module
      * @return string
@@ -18,5 +30,10 @@ class LoginController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionLoginbyemail()
+    {
+
     }
 }

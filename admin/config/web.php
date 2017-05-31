@@ -14,7 +14,7 @@ $config = [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'controllerNamespace' => 'admin\controllers',
     'bootstrap' => ['log'],
-    'defaultRoute' => '/config/role',
+    'defaultRoute' => '/config/main',
     'components' => array_merge([
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -33,7 +33,7 @@ $config = [
         ],
 
         'errorHandler' => [
-            'errorAction' => '/config/role/error-json',
+            'errorAction' => '/config/main/error-json',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
