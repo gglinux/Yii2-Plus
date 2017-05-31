@@ -3,23 +3,23 @@
 namespace admin\modules\admin\controllers;
 
 use yii\web\Controller;
+use admin\base\AdminController;
 
 /**
  *
  * 管理后台管理员 登陆控制器
  * Login controller for the `admin` module
  */
-class LoginController extends Controller
+class LoginController extends AdminController
 {
 
     public $adminUsers = [
         [
-            'uid' => '110',
-            'name'=>'张三',
+            'uid'  => '110',
+            'name' =>'张三',
             'password'=>'111111',
             'introduction' => '后台管理员',
-            ''
-
+            'role' => ''
         ]
 
     ];
@@ -33,6 +33,12 @@ class LoginController extends Controller
     }
 
     public function actionLoginbyemail()
+    {
+
+    }
+
+
+    public function actionLoginout()
     {
 
     }

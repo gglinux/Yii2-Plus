@@ -24,6 +24,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        // 使用 PhpManager
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+        ],
         'user' => [
             'identityClass' => 'admin\models\User',
             'enableAutoLogin' => true,

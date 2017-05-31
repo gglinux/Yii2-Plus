@@ -5,9 +5,10 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace console\commands;
+namespace service\commands;
+
 use yii\console\Controller;
-use service\modules\common\services\DownloadService;
+
 /**
  * This command echoes the first argument that you have entered.
  *
@@ -26,18 +27,4 @@ class HelloController extends Controller
     {
         echo $message . "\n";
     }
-
-    /**
-     * 队列使用实例
-     * ./yii hello/download
-     */
-    public function actionDownload()
-    {
-
-        \Yii::$app->queue->push(new DownloadService([
-            'url' => 'http://gglinux.com/images/dog.png',
-            'file' => '/vagrant/tmp/dog.png',
-        ]));
-    }
 }
-

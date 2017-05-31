@@ -8,8 +8,13 @@
 ///////////admin对外路由配置/////////////
 
 $rules = [
-    //用户
-    'admin/login/loginbyemail' =>'user/user/login',
+    //管理后台 用户模块
+    'admin/login/loginbyemail'=> 'admin/user/loginbyemail',
+    'admin/login/loginout'    => 'admin/user/loginout',
+    'admin/user/info'   => 'admin/user/info',
+    //测试文章 模块
+    'article/list'      => 'test/article/list',
+    'article/detail'    =>'test/article/detail'
 ];
 
 return $rules;
