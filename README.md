@@ -24,7 +24,7 @@ APP服务层，提供独立模块给API调用
 admin
 ------------
 网站管理后台项目
-1. Element UI框架搭建（暂未实现）
+1. Element UI框架搭建
 
 
 www
@@ -37,4 +37,10 @@ Installation
 2. ``` git clone git@github.com:gglinux/Yii2-Plus.git ```
 3. 根目录，composer update
 
+TODO
+------------
+1. 管理后台权限管理，暂不完善。
+2. 使用文档，暂不完善。
+2. 单元测试，暂无。
+3. 日志服务，暂无。
 
